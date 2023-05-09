@@ -1,23 +1,54 @@
 package com.example.blog
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/article")
-class ArticleController(private val repository: ArticleRepository) {
+class ArticleController(private val articleRepository: ArticleRepository, private val userRepository: UserRepository) {
 
     @GetMapping("/")
-    fun findAll() = repository.findAllByOrderByAddedAtDesc()
+    fun findAll() = articleRepository.findAllByOrderByAddedAtDesc()
 
     @GetMapping("/{slug}")
     fun findOne(@PathVariable slug: String) =
-        repository.findBySlug(slug) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
+        articleRepository.findBySlug(slug) ?: throw ArticleNotFoundException(slug)
 
+    @PostMapping("/article")
+    fun createArticle(@RequestBody article: Article): ResponseEntity<String> {
+        article.author =
+            userRepository.findByLogin(article.author.login) ?: throw UserNotFoundException(article.author.login)
+        articleRepository.save(article)
+        return ResponseEntity.status(HttpStatus.CREATED).body("Created article successfully")
+    }
+
+    @PutMapping("/article/{slug}")
+    fun editArticle(
+        @PathVariable slug: String,
+        @RequestBody body: Map<String, String>
+    ): ResponseEntity<String> {
+        val foundArticle = articleRepository.findBySlug(slug)
+        if (foundArticle == null) {
+            throw ArticleNotFoundException(slug)
+        }
+        foundArticle.title = body.getOrDefault("title", foundArticle.title)
+        foundArticle.headline = body.getOrDefault("headline", foundArticle.headline)
+        foundArticle.content = body.getOrDefault("content", foundArticle.content)
+        articleRepository.save(foundArticle)
+        return ResponseEntity.status(HttpStatus.OK).body("Updated article successfully")
+    }
+
+    @DeleteMapping("/article/{slug}")
+    fun deleteArticle(@PathVariable slug: String): ResponseEntity<String> {
+        val foundArticle = articleRepository.findBySlug(slug)
+        if (foundArticle == null || foundArticle.id == null) {
+            throw ArticleNotFoundException(slug)
+        }
+        foundArticle.id?.let { articleRepository.deleteById(it) }
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted article successfully")
+    }
 }
 
 @RestController
