@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import kotlin.jvm.optionals.getOrElse
 
 @RestController
 @RequestMapping("/api/article")
@@ -12,11 +13,12 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
     @GetMapping("/")
     fun findAll() = articleRepository.findAllByOrderByAddedAtDesc()
 
-    @GetMapping("/{slug}")
-    fun findOne(@PathVariable slug: String) =
-        articleRepository.findBySlug(slug) ?: throw ArticleNotFoundException(slug)
+    @OptIn(ExperimentalStdlibApi::class)
+    @GetMapping("/{id}")
+    fun findOne(@PathVariable id: String): Article =
+        articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
 
-    @PostMapping("/article")
+    @PostMapping("/")
     fun createArticle(@RequestBody article: Article): ResponseEntity<String> {
         article.author =
             userRepository.findByLogin(article.author.login) ?: throw UserNotFoundException(article.author.login)
@@ -24,15 +26,13 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
         return ResponseEntity.status(HttpStatus.CREATED).body("Created article successfully")
     }
 
-    @PutMapping("/article/{slug}")
+    @OptIn(ExperimentalStdlibApi::class)
+    @PutMapping("/{id}")
     fun editArticle(
-        @PathVariable slug: String,
+        @PathVariable id: String,
         @RequestBody body: Map<String, String>
     ): ResponseEntity<String> {
-        val foundArticle = articleRepository.findBySlug(slug)
-        if (foundArticle == null) {
-            throw ArticleNotFoundException(slug)
-        }
+        val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
         foundArticle.title = body.getOrDefault("title", foundArticle.title)
         foundArticle.headline = body.getOrDefault("headline", foundArticle.headline)
         foundArticle.content = body.getOrDefault("content", foundArticle.content)
@@ -40,25 +40,37 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
         return ResponseEntity.status(HttpStatus.OK).body("Updated article successfully")
     }
 
-    @DeleteMapping("/article/{slug}")
-    fun deleteArticle(@PathVariable slug: String): ResponseEntity<String> {
-        val foundArticle = articleRepository.findBySlug(slug)
-        if (foundArticle == null || foundArticle.id == null) {
-            throw ArticleNotFoundException(slug)
-        }
-        foundArticle.id?.let { articleRepository.deleteById(it) }
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted article successfully")
+    @OptIn(ExperimentalStdlibApi::class)
+    @DeleteMapping("/{id}")
+    fun deleteArticle(@PathVariable id: String): ResponseEntity<String> {
+        val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
+        articleRepository.deleteById(foundArticle.id!!)
+        return ResponseEntity.noContent().build()
     }
 }
 
 @RestController
 @RequestMapping("/api/user")
-class UserController(private val repository: UserRepository) {
+class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/")
-    fun findAll() = repository.findAll()
+    fun findAll() = userRepository.findAll()
 
     @GetMapping("/{login}")
     fun findOne(@PathVariable login: String) =
-        repository.findByLogin(login) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
+        userRepository.findByLogin(login) ?: throw ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "This user does not exist"
+        )
+
+    @PostMapping("/")
+    fun register(@RequestBody body: Map<String, String>): ResponseEntity<String> {
+        val login = body.getOrElse("login") { throw InvalidRequestException("Invalid login") }
+        val firstname = body.getOrElse("firstname") { throw InvalidRequestException("Invalid firstname") }
+        val lastname = body.getOrElse("lastname") { throw InvalidRequestException("Invalid lastname") }
+        val description = body.getOrDefault("description", null)
+        val user = User(login, firstname, lastname, description)
+        userRepository.save(user)
+        return ResponseEntity.status(HttpStatus.CREATED).body("Registered user successfully")
+    }
 }

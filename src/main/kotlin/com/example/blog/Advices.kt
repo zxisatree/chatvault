@@ -21,4 +21,11 @@ class Advices {
     fun userNotFoundHandler(ex: UserNotFoundException): String? {
         return ex.message
     }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidRequestException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun invalidRequestHandler(ex: InvalidRequestException): String? {
+        return ex.message
+    }
 }

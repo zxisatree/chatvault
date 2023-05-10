@@ -6,6 +6,7 @@ import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import kotlin.jvm.optionals.getOrElse
 
 @Controller
 class HtmlController(
@@ -22,18 +23,19 @@ class HtmlController(
         return "blog"
     }
 
-    @GetMapping("/article/{slug}")
-    fun article(@PathVariable slug: String, model: Model): String {
+    @OptIn(ExperimentalStdlibApi::class)
+    @GetMapping("/article/{id}")
+    fun article(@PathVariable id: String, model: Model): String {
         val article = articleRepository
-            .findBySlug(slug)
-            ?.render()
-            ?: throw ArticleNotFoundException(slug)
+            .findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
+            .render()
         model["title"] = article.title
         model["article"] = article
         return "article"
     }
 
     fun Article.render() = RenderedArticle(
+        id!!,
         slug,
         title,
         headline,
@@ -43,6 +45,7 @@ class HtmlController(
     )
 
     data class RenderedArticle(
+        val id: Long,
         val slug: String,
         val title: String,
         val headline: String,

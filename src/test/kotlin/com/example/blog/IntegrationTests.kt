@@ -1,3 +1,5 @@
+package com.example.blog
+
 import com.example.blog.toSlug
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
@@ -22,14 +24,14 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
         println(">> Assert blog page title, content and status code")
         val entity = restTemplate.getForEntity<String>("/")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).contains("<h1>Blog</h1>", "Lorem")
+        assertThat(entity.body).contains("<title>Blog</title>", "Lorem")
     }
 
     @Test
     fun `Assert article page title, content and status code`() {
         println(">> Assert article page title, content and status code")
         val title = "Lorem"
-        val entity = restTemplate.getForEntity<String>("/article/${title.toSlug()}")
+        val entity = restTemplate.getForEntity<String>("/article/1")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).contains(title, "Lorem", "dolor sit amet")
     }
