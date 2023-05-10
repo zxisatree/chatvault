@@ -50,3 +50,4 @@ During development, docker images were often not rebuilt when there was a change
 
 ## Appendix
 `kapt`: annotation processor for Kotlin
+Logging: the `spring-boot-starter-logging` dependency depends on `spring-jcl`, which enables logging by default.
