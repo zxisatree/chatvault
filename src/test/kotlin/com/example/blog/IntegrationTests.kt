@@ -1,6 +1,5 @@
 package com.example.blog
 
-import com.example.blog.toSlug
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll

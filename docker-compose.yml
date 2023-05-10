@@ -27,3 +27,28 @@ services:
       - POSTGRES_USER=composeOrElse
       - POSTGRES_PASSWORD=throwNewNull
       - POSTGRES_DB=kotlinblog
+
+  prometheus:
+    image: prom/prometheus:v2.38.0
+    container_name: prometheus-container
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - ./prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "1029:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:9.1.4
+    container_name: grafana-container
+    depends_on:
+      - prometheus
+    ports:
+      - "1040:3000"
+    volumes:
+      - ./grafana/:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost

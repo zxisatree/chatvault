@@ -37,6 +37,12 @@ To build the application without Docker (and without a PostgreSQL database), run
 ## Database initialisation
 The PostgreSQL docker image runs the files found in `docker/docker-entrypoint-initdb.d/`. In this application, it is used to simply create the tables and seed the database.
 
+## Docker
+During development, docker images were often not rebuilt when there was a change. `docker compose up --remove-orphans --force-recreate --build` was used to force rebuilding.
+
+## Prometheus and Grafana
+Prometheus and Grafana are included in the Docker Compose file. If `docker compose` is used to start the application, Prometheus will be exposed on port 1029, and Grafana on port 1040.
+
 ## Using H2 database instead
 A H2 embedded database can also be used with the application. Simply remove `spring.datasource.url` from `application.properties` and replace `runtimeOnly("org.postgresql:postgresql")` with `runtimeOnly("com.h2database:h2")` in `build.gradle.kts`. By default, Spring uses a transient database in memory (RAM), that will be wiped upon the application restarting. `BlogConfiguration.kt` contains a `databaseInitializer` function that can be uncommented when using a H2 database to seed the database upon the application starting.
 
@@ -45,9 +51,6 @@ A H2 embedded database can also be used with the application. Simply remove `spr
 
 `spring.jpa.hibernate.ddl-auto=update` creates the database tables if they do not exist. If they already exist, it checks the database tables and updates the schema (untested).
 
-## Docker
-During development, docker images were often not rebuilt when there was a change. `docker compose up --remove-orphans --force-recreate --build` was used to force rebuilding.
-
 ## Appendix
-`kapt`: annotation processor for Kotlin
+`kapt`: annotation processor for Kotlin.
 Logging: the `spring-boot-starter-logging` dependency depends on `spring-jcl`, which enables logging by default.
