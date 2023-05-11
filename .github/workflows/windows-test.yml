@@ -13,7 +13,7 @@ jobs:
         id: postgres
       - uses: actions/checkout@v3
       - name: Seed database
-        run: PG_PASSWORD=throwNewNull -h localhost -d kotlin_blog -U composeOrElse -f psql ./docker/docker-entrypoint-initdb.d/init.sql
+        run: PG_PASSWORD=throwNewNull psql -h localhost -d kotlin_blog -U composeOrElse -f ./docker/docker-entrypoint-initdb.d/init.sql
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
