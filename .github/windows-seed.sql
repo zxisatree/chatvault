@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: article; Type: TABLE; Schema: public; Owner: db_creator
+-- Name: article; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
 CREATE TABLE public.article (
@@ -35,10 +35,10 @@ CREATE TABLE public.article (
 );
 
 
-ALTER TABLE public.article OWNER TO db_creator;
+ALTER TABLE public.article OWNER TO windows_tester;
 
 --
--- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: db_creator
+-- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
 --
 
 CREATE SEQUENCE public.article_seq
@@ -49,10 +49,10 @@ CREATE SEQUENCE public.article_seq
     CACHE 1;
 
 
-ALTER TABLE public.article_seq OWNER TO db_creator;
+ALTER TABLE public.article_seq OWNER TO windows_tester;
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: db_creator
+-- Name: user; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
 CREATE TABLE public."user" (
@@ -64,10 +64,10 @@ CREATE TABLE public."user" (
 );
 
 
-ALTER TABLE public."user" OWNER TO db_creator;
+ALTER TABLE public."user" OWNER TO windows_tester;
 
 --
--- Name: user_seq; Type: SEQUENCE; Schema: public; Owner: db_creator
+-- Name: user_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
 --
 
 CREATE SEQUENCE public.user_seq
@@ -78,10 +78,10 @@ CREATE SEQUENCE public.user_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_seq OWNER TO db_creator;
+ALTER TABLE public.user_seq OWNER TO windows_tester;
 
 --
--- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: db_creator
+-- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: windows_tester
 --
 
 COPY public.article (id, added_at, content, headline, slug, title, author_id) FROM stdin;
@@ -93,7 +93,7 @@ COPY public.article (id, added_at, content, headline, slug, title, author_id) FR
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: db_creator
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: windows_tester
 --
 
 COPY public."user" (id, description, firstname, lastname, login) FROM stdin;
@@ -104,21 +104,21 @@ COPY public."user" (id, description, firstname, lastname, login) FROM stdin;
 
 
 --
--- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: db_creator
+-- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: windows_tester
 --
 
 SELECT pg_catalog.setval('public.article_seq', 851, true);
 
 
 --
--- Name: user_seq; Type: SEQUENCE SET; Schema: public; Owner: db_creator
+-- Name: user_seq; Type: SEQUENCE SET; Schema: public; Owner: windows_tester
 --
 
 SELECT pg_catalog.setval('public.user_seq', 951, true);
 
 
 --
--- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: db_creator
+-- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
 --
 
 ALTER TABLE ONLY public.article
@@ -126,7 +126,7 @@ ALTER TABLE ONLY public.article
 
 
 --
--- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: db_creator
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
 --
 
 ALTER TABLE ONLY public."user"
@@ -134,7 +134,7 @@ ALTER TABLE ONLY public."user"
 
 
 --
--- Name: article FKfhk3yc24nq2uawud4m6pd89q2; Type: FK CONSTRAINT; Schema: public; Owner: db_creator
+-- Name: article FKfhk3yc24nq2uawud4m6pd89q2; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
 --
 
 ALTER TABLE ONLY public.article

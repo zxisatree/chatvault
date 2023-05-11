@@ -38,3 +38,4 @@ out/
 
 /prometheus/data
 /grafana
+/env.properties
