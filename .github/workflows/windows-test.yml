@@ -1,28 +1,16 @@
 name: Gradle test
 on: push
 jobs:
-  test-ubuntu:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-
-        env:
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '14.7-alpine'
           POSTGRES_PASSWORD: db_creator
           POSTGRES_USER: write
           POSTGRES_DB: kotlin_blog
-
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-    steps:
       - uses: actions/checkout@v3
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
