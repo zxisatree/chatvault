@@ -5,15 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create .env file
+      - name: Create .env and env.properties
         env:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
           POSTGRES_DB_NAME: ${{secrets.POSTGRES_DB_NAME}}
           POSTGRES_USERNAME: ${{secrets.POSTGRES_USERNAME}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
           GRAFANA_PASSWORD: ${{secrets.GRAFANA_PASSWORD}}
+          JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
+          PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
+          PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
         run: |
           touch .env
           printf "DOCKER_SPRING_DATASOURCE_URL=%s\nDOCKER_POSTGRES_DB_NAME=%s\nDOCKER_POSTGRES_USERNAME=%s\nDOCKER_POSTGRES_PASSWORD=%s\nGRAFANA_PASSWORD=%s" "$SPRING_DATASOURCE_URL" "$POSTGRES_DB_NAME" "$POSTGRES_USERNAME" "$POSTGRES_PASSWORD" "$GRAFANA_PASSWORD" >> .env
+          touch env.properties
+          printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
       - name: Build the stack
         run: docker-compose build
