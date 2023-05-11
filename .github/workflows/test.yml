@@ -1,4 +1,4 @@
-name: Gradle test
+name: Gradle test on Ubuntu
 on: push
 jobs:
   test-ubuntu:
@@ -6,12 +6,10 @@ jobs:
     services:
       postgres:
         image: postgres
-
         env:
-          POSTGRES_PASSWORD: db_creator
-          POSTGRES_USER: write
+          POSTGRES_USER: db_creator
+          POSTGRES_PASSWORD: write
           POSTGRES_DB: kotlin_blog
-
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -21,6 +19,11 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v3
+      - name: Check if Postgres is reachable
+        run: |
+          sudo apt install -y postgresql-client
+          echo "Postgres installed"
+          pg_isready
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17
