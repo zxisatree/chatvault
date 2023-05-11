@@ -2,7 +2,7 @@
 _A simple CRUD API_
 
 [![Docker Compose](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml)
-[![Gradle test on push](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml)
+[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml)
 
 CRUD blog backend written with Spring Boot and Mustache for HTML templates. A temporary PostgreSQL database is included in the docker image.
 
@@ -17,9 +17,27 @@ The following prerequisites are required for this project:
 * Kotlin compiler
 * Docker (or Docker Desktop for Windows)
 
-Clone the repository, then run `docker compose up` in the root folder. The JAR file will be built and copied to the docker image. The server is exposed on port 1018 by default.
+Clone the repository, then create a `.env` file in the root directory (see [Environment variable file](#Environment-variable-file) for more info about the environment file).
 
-To build the application without Docker (and without a PostgreSQL database), run `./gradlew build -x test` in the root directory. The JAR file can be found in `/build/libs/` after building.
+Finally, run `docker compose up` in the root folder. The JAR file will be built and copied to the docker image. The server is exposed on port 1018 by default.
+
+To build the application without Docker (and without an "embedded" PostgreSQL database), run `./gradlew build -x test` in the root directory. The JAR file can be found in `/build/libs/` after building.
+
+## Environment variable file (`.env`, `env.properties`)
+The `.env` and `env.properties` files contain secrets, and thus are not committed by default and ignored in `.gitignore`. Both files should be created in the root directory. The files require the following keys (replace `{items}` in curly braces with your own values):
+`env.properties`:
+* `JDBC_PSQL_URI=jdbc:postgresql://{host}:{postgres_port}/{postgres_db_name}`
+* `PSQL_USERNAME={postgres_username}`
+* `PSQL_PASSWORD={postgres_password}`
+
+`.env`:
+* `DOCKER_SPRING_DATASOURCE_URL=jdbc:postgresql://{docker_service_name}:{docker_postgres_port}/{docker_postgres_db_name}`
+* `DOCKER_POSTGRES_DB_NAME={docker_postgres_db_name}`
+* `DOCKER_POSTGRES_USERNAME={docker_postgres_username}`
+* `DOCKER_POSTGRES_PASSWORD={docker_postgres_password}`
+* `GRAFANA_PASSWORD={grafana_password}`
+
+Docker uses environment variables from a `.env` file by default. However, Spring Boot's `application.properties` throws an error if `.env` is used as the config file, so `env.properties` is used instead. The JAR file created does not include this `env.properties` file, so the Dockerfile includes a copy instruction to copy this file to the production folder.
 
 ## Project structure
 `/src/main/kotlin/com.example.blog/`:
@@ -50,6 +68,9 @@ A H2 embedded database can also be used with the application. Simply remove `spr
 `spring.jpa.properties.hibernate.globally_quoted_identifiers=true` and `spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions = true` allow the entity called "User". In PostgreSQL, "User" is a reserved keyword, and normally cannot be used as a table name. However, these settings make Hibernate (Spring's ORM) escape any mentions of "User" by enclosing it in double quotes, allowing it to be a valid identifier.
 
 `spring.jpa.hibernate.ddl-auto=update` creates the database tables if they do not exist. If they already exist, it checks the database tables and updates the schema (untested).
+
+## Testing
+`.env` is not committed, so a substitute `.env` file for testing is included in the `.github` folder. During the Windows test, the file is copied to the root directory before the tests are run.
 
 ## Appendix
 `kapt`: annotation processor for Kotlin.

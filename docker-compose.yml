@@ -10,9 +10,9 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/kotlinblog
-      - SPRING_DATASOURCE_USERNAME=composeOrElse
-      - SPRING_DATASOURCE_PASSWORD=throwNewNull
+      - SPRING_DATASOURCE_URL=${DOCKER_SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DOCKER_POSTGRES_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DOCKER_POSTGRES_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - "1018:8080"
@@ -24,9 +24,9 @@ services:
       dockerfile: ./docker/postgres.dockerfile
     container_name: db
     environment:
-      - POSTGRES_USER=composeOrElse
-      - POSTGRES_PASSWORD=throwNewNull
-      - POSTGRES_DB=kotlinblog
+      - POSTGRES_USER=${DOCKER_POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${DOCKER_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DOCKER_POSTGRES_DB_NAME}
 
   prometheus:
     image: prom/prometheus:v2.38.0
@@ -50,5 +50,5 @@ services:
     volumes:
       - ./grafana/:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_SERVER_DOMAIN=localhost
