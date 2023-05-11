@@ -6,12 +6,14 @@ jobs:
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
         with:
-          username: db_creator
-          password: write
-          database: kotlin_blog
+          username: composeOrElse
+          password: throwNewNull
+          database: kotlinblog
           port: 5432
         id: postgres
       - uses: actions/checkout@v3
+      - name: Seed database
+      - run: PG_PASSWORD=throwNewNull -h localhost -d kotlin_blog -U composeOrElse -f psql ./docker/docker-entrypoint-initdb.d/init.sql
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

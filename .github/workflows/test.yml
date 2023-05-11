@@ -23,7 +23,8 @@ jobs:
         run: |
           sudo apt install -y postgresql-client
           echo "Postgres installed"
-          pg_isready
+          pg_isready -d kotlin_blog -h localhost -p 5432 -U db_creator
+          pg_isready -d kotlin_blog -h postgres -p 5432 -U db_creator
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17
