@@ -15,13 +15,18 @@ This repository can be used to resolve potential issues that might be found when
 The following prerequisites are required for this project:
 * JDK 17
 * Kotlin compiler
-* Docker (or Docker Desktop for Windows)
+
+### Building the Docker image
+To build and run the Docker image, you will need Docker (or Docker Desktop for Windows).
 
 Clone the repository, then create a `.env` file in the root directory (see [Environment variable file](#Environment-variable-file) for more info about the environment file).
 
-Finally, run `docker compose up` in the root folder. The JAR file will be built and copied to the docker image. The server is exposed on port 1018 by default.
+Then run `docker compose up` in the root folder. The JAR file will be built and copied to the docker image. The server is exposed on port 1018 by default.
 
-To build the application without Docker (and without an "embedded" PostgreSQL database), run `./gradlew build -x test` in the root directory. The JAR file can be found in `/build/libs/` after building.
+### Building without Docker
+To build the application without Docker, you will also need PostgreSQL (version 14.5+) running on your system.
+
+Run `./gradlew build -x test` in the root directory. The JAR file can be found in `/build/libs/` after building.
 
 ## Environment variable file (`.env`, `env.properties`)
 The `.env` and `env.properties` files contain secrets, and thus are not committed by default and ignored in `.gitignore`. Both files should be created in the root directory. The files require the following keys (replace `{items}` in curly braces with your own values):
@@ -38,6 +43,8 @@ The `.env` and `env.properties` files contain secrets, and thus are not committe
 * `GRAFANA_PASSWORD={grafana_password}`
 
 Docker uses environment variables from a `.env` file by default. However, Spring Boot's `application.properties` throws an error if `.env` is used as the config file, so `env.properties` is used instead. The JAR file created does not include this `env.properties` file, so the Dockerfile includes a copy instruction to copy this file to the production folder.
+
+On Github Actions, `env.properties` does not exist. Thus, Github Secrets are used instead. See [here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) for how to create secrets for a repository.
 
 ## Project structure
 `/src/main/kotlin/com.example.blog/`:
