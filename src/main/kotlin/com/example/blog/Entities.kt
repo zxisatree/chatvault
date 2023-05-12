@@ -1,6 +1,9 @@
 package com.example.blog
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import java.time.LocalDateTime
 
 @Entity
@@ -11,7 +14,8 @@ class Article(
     @ManyToOne var author: User,
     var slug: String = title.toSlug(),
     var addedAt: LocalDateTime = LocalDateTime.now(),
-    @Id @GeneratedValue var id: Long? = null)
+    @Id @GeneratedValue var id: Long? = null
+)
 
 @Entity
 class User(
@@ -19,4 +23,5 @@ class User(
     var firstname: String,
     var lastname: String,
     var description: String? = null,
-    @Id @GeneratedValue var id: Long? = null)
+    @Id @GeneratedValue var id: Long? = null
+)

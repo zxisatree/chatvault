@@ -9,11 +9,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.data.repository.findByIdOrNull
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RepositoriesTests @Autowired constructor(
     val entityManager: TestEntityManager,
     val userRepository: UserRepository,
-    val articleRepository: ArticleRepository) {
+    val articleRepository: ArticleRepository
+) {
 
     @Test
     fun `When findByIdOrNull then return Article with temporary entries`() {

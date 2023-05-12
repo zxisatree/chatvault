@@ -21,19 +21,21 @@
 -- SET default_table_access_method = heap;
 
 -- Check users and roles
-SELECT * FROM user;
+SELECT *
+FROM user;
 
 --
 -- Name: article; Type: TABLE; Schema: public; Owner: composeOrElse
 --
 
-CREATE TABLE public.article (
-    id bigint NOT NULL,
-    added_at timestamp(6) without time zone,
-    content character varying(255),
-    headline character varying(255),
-    slug character varying(255),
-    title character varying(255),
+CREATE TABLE public.article
+(
+    id        bigint NOT NULL,
+    added_at  timestamp(6) without time zone,
+    content   character varying(255),
+    headline  character varying(255),
+    slug      character varying(255),
+    title     character varying(255),
     author_id bigint
 );
 
@@ -48,8 +50,7 @@ CREATE SEQUENCE public.article_seq
     START WITH 1
     INCREMENT BY 50
     NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+    NO MAXVALUE CACHE 1;
 
 
 ALTER TABLE public.article_seq OWNER TO "composeOrElse";
@@ -58,12 +59,13 @@ ALTER TABLE public.article_seq OWNER TO "composeOrElse";
 -- Name: user; Type: TABLE; Schema: public; Owner: composeOrElse
 --
 
-CREATE TABLE public."user" (
-    id bigint NOT NULL,
+CREATE TABLE public."user"
+(
+    id          bigint NOT NULL,
     description character varying(255),
-    firstname character varying(255),
-    lastname character varying(255),
-    login character varying(255)
+    firstname   character varying(255),
+    lastname    character varying(255),
+    login       character varying(255)
 );
 
 
@@ -77,8 +79,7 @@ CREATE SEQUENCE public.user_seq
     START WITH 1
     INCREMENT BY 50
     NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+    NO MAXVALUE CACHE 1;
 
 
 ALTER TABLE public.user_seq OWNER TO "composeOrElse";

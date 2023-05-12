@@ -24,18 +24,20 @@ SET default_table_access_method = heap;
 -- Name: article; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
-CREATE TABLE public.article (
-    id bigint NOT NULL,
-    added_at timestamp(6) without time zone,
-    content character varying(255),
-    headline character varying(255),
-    slug character varying(255),
-    title character varying(255),
+CREATE TABLE public.article
+(
+    id        bigint NOT NULL,
+    added_at  timestamp(6) without time zone,
+    content   character varying(255),
+    headline  character varying(255),
+    slug      character varying(255),
+    title     character varying(255),
     author_id bigint
 );
 
 
-ALTER TABLE public.article OWNER TO windows_tester;
+ALTER TABLE public.article
+    OWNER TO windows_tester;
 
 --
 -- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
@@ -49,22 +51,25 @@ CREATE SEQUENCE public.article_seq
     CACHE 1;
 
 
-ALTER TABLE public.article_seq OWNER TO windows_tester;
+ALTER TABLE public.article_seq
+    OWNER TO windows_tester;
 
 --
 -- Name: user; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
-CREATE TABLE public."user" (
-    id bigint NOT NULL,
+CREATE TABLE public."user"
+(
+    id          bigint NOT NULL,
     description character varying(255),
-    firstname character varying(255),
-    lastname character varying(255),
-    login character varying(255)
+    firstname   character varying(255),
+    lastname    character varying(255),
+    login       character varying(255)
 );
 
 
-ALTER TABLE public."user" OWNER TO windows_tester;
+ALTER TABLE public."user"
+    OWNER TO windows_tester;
 
 --
 -- Name: user_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
@@ -78,7 +83,8 @@ CREATE SEQUENCE public.user_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_seq OWNER TO windows_tester;
+ALTER TABLE public.user_seq
+    OWNER TO windows_tester;
 
 --
 -- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: windows_tester
@@ -138,7 +144,7 @@ ALTER TABLE ONLY public."user"
 --
 
 ALTER TABLE ONLY public.article
-    ADD CONSTRAINT "FKfhk3yc24nq2uawud4m6pd89q2" FOREIGN KEY (author_id) REFERENCES public."user"(id);
+    ADD CONSTRAINT "FKfhk3yc24nq2uawud4m6pd89q2" FOREIGN KEY (author_id) REFERENCES public."user" (id);
 
 
 --

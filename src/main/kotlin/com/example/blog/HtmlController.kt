@@ -1,11 +1,9 @@
 package com.example.blog
 
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
 import kotlin.jvm.optionals.getOrElse
 
 @Controller
