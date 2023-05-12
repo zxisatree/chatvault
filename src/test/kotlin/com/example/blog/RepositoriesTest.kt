@@ -32,7 +32,6 @@ class RepositoriesTests @Autowired constructor(
     @Test
     fun `When findByLogin then return User`() {
         val johnDoe = DbUser("johnDoe", "password")
-        userRepository.findAll().forEach(::println)
         val user = userRepository.findByLogin(johnDoe.login)
         assertThat(user?.login).isEqualTo(johnDoe.login)
         assertThat(user?.password).isEqualTo(johnDoe.password)
