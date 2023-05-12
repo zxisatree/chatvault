@@ -1,31 +1,38 @@
 --
--- PostgreSQL database dump. Created using pg_dump -U username -d dbname > filename
+-- PostgreSQL database dump
 --
 
 -- Dumped from database version 14.5
 -- Dumped by pg_dump version 14.5
 
--- SET statement_timeout = 0;
--- SET lock_timeout = 0;
--- SET idle_in_transaction_session_timeout = 0;
--- SET client_encoding = 'UTF8';
--- SET standard_conforming_strings = on;
--- SELECT pg_catalog.set_config('search_path', '', false);
--- SET check_function_bodies = false;
--- SET xmloption = content;
--- SET client_min_messages = warning;
--- SET row_security = off;
---
--- SET default_tablespace = '';
---
--- SET default_table_access_method = heap;
+SET
+statement_timeout = 0;
+SET
+lock_timeout = 0;
+SET
+idle_in_transaction_session_timeout = 0;
+SET
+client_encoding = ''UTF8'';
+SET
+standard_conforming_strings = on;
+SELECT pg_catalog.set_config(''search_path'', '''', false);
+SET
+check_function_bodies = false;
+SET
+xmloption = content;
+SET
+client_min_messages = warning;
+SET
+row_security = off;
 
--- Check users and roles
-SELECT *
-FROM user;
+SET
+default_tablespace = '''';
+
+SET
+default_table_access_method = heap;
 
 --
--- Name: article; Type: TABLE; Schema: public; Owner: composeOrElse
+-- Name: article; Type: TABLE; Schema: public; Owner: compose_or_else
 --
 
 CREATE TABLE public.article
@@ -40,10 +47,10 @@ CREATE TABLE public.article
 );
 
 
-ALTER TABLE public.article OWNER TO "composeOrElse";
+ALTER TABLE public.article OWNER TO compose_or_else;
 
 --
--- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: composeOrElse
+-- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: compose_or_else
 --
 
 CREATE SEQUENCE public.article_seq
@@ -53,76 +60,70 @@ CREATE SEQUENCE public.article_seq
     NO MAXVALUE CACHE 1;
 
 
-ALTER TABLE public.article_seq OWNER TO "composeOrElse";
+ALTER TABLE public.article_seq OWNER TO compose_or_else;
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: composeOrElse
+-- Name: db_user; Type: TABLE; Schema: public; Owner: compose_or_else
 --
 
-CREATE TABLE public."user"
+CREATE TABLE public.db_user
 (
-    id          bigint NOT NULL,
-    description character varying(255),
-    firstname   character varying(255),
-    lastname    character varying(255),
-    login       character varying(255)
+    id       bigint NOT NULL,
+    login    character varying(255),
+    password character varying(255)
 );
 
 
-ALTER TABLE public."user" OWNER TO "composeOrElse";
+ALTER TABLE public.db_user OWNER TO compose_or_else;
 
 --
--- Name: user_seq; Type: SEQUENCE; Schema: public; Owner: composeOrElse
+-- Name: db_user_seq; Type: SEQUENCE; Schema: public; Owner: compose_or_else
 --
 
-CREATE SEQUENCE public.user_seq
+CREATE SEQUENCE public.db_user_seq
     START WITH 1
     INCREMENT BY 50
     NO MINVALUE
     NO MAXVALUE CACHE 1;
 
 
-ALTER TABLE public.user_seq OWNER TO "composeOrElse";
+ALTER TABLE public.db_user_seq OWNER TO compose_or_else;
 
 --
--- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: composeOrElse
+-- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
 COPY public.article (id, added_at, content, headline, slug, title, author_id) FROM stdin;
-1	2023-05-09 18:56:18.18165	dolor sit amet	Lorem	lorem	Lorem	1
-2	2023-05-09 18:56:18.189343	dolor sit amet	Ipsum	ipsum	Ipsum	1
-102	2023-05-09 19:42:29.663244	It was created by Postman.	You won't believe how this article was created!	postman-article	Postman article	1
-202	2023-05-09 22:30:03.702372	It was created by Postman.	To be updated...	postman-article-2	Postman article 2	1
+1	2023-05-12 21:18:27.871862	dolor sit amet	Lorem	lorem	Lorem	1
+2	2023-05-12 21:18:27.879881	dolor sit amet	Ipsum	ipsum	Ipsum	1
 \.
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: composeOrElse
+-- Data for Name: db_user; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
-COPY public."user" (id, description, firstname, lastname, login) FROM stdin;
-1	\N	John	Doe	johnDoe
-2	\N	Terry	Smith	terrySmith
-752	\N	Docker	Composer	dockerComposer
+COPY public.db_user (id, login, password) FROM stdin;
+1	johnDoe	password
 \.
 
 
 --
--- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: composeOrElse
+-- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: compose_or_else
 --
 
-SELECT pg_catalog.setval('public.article_seq', 801, true);
-
-
---
--- Name: user_seq; Type: SEQUENCE SET; Schema: public; Owner: composeOrElse
---
-
-SELECT pg_catalog.setval('public.user_seq', 901, true);
+SELECT pg_catalog.setval(''public.article_seq'', 301, true);
 
 
 --
--- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: composeOrElse
+-- Name: db_user_seq; Type: SEQUENCE SET; Schema: public; Owner: compose_or_else
+--
+
+SELECT pg_catalog.setval(''public.db_user_seq'', 251, true);
+
+
+--
+-- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.article
@@ -130,19 +131,19 @@ ALTER TABLE ONLY public.article
 
 
 --
--- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: composeOrElse
+-- Name: db_user db_user_pkey; Type: CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
-ALTER TABLE ONLY public."user"
-    ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.db_user
+    ADD CONSTRAINT db_user_pkey PRIMARY KEY (id);
 
 
 --
--- Name: article FKfhk3yc24nq2uawud4m6pd89q2; Type: FK CONSTRAINT; Schema: public; Owner: composeOrElse
+-- Name: article FK1ltag0qcdodojepd6jqsxijht; Type: FK CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.article
-    ADD CONSTRAINT "FKfhk3yc24nq2uawud4m6pd89q2" FOREIGN KEY (author_id) REFERENCES public."user"(id);
+    ADD CONSTRAINT "FK1ltag0qcdodojepd6jqsxijht" FOREIGN KEY (author_id) REFERENCES public.db_user(id);
 
 
 --
