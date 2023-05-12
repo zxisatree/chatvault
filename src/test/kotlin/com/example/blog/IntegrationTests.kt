@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.http.HttpStatus
+import org.springframework.security.test.context.support.WithMockUser
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
@@ -22,15 +23,18 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
     fun `Assert blog page title, content and status code`() {
         println(">> Assert blog page title, content and status code")
         val entity = restTemplate.getForEntity<String>("/")
+        println(entity.body)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).contains("<title>Blog</title>", "Lorem")
     }
 
+    @WithMockUser(username="tester", roles=["USER"])
     @Test
     fun `Assert article page title, content and status code`() {
         println(">> Assert article page title, content and status code")
         val title = "Lorem"
         val entity = restTemplate.getForEntity<String>("/article/1")
+        println(entity.body)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).contains(title, "Lorem", "dolor sit amet")
     }

@@ -122,6 +122,8 @@ checks the database tables and updates the schema (untested).
 `.env` is not committed, so a substitute `.env` file for testing is included in the `.github` folder. During the Windows
 test, the file is copied to the root directory before the tests are run.
 
+For routes that require authentication, we use `@WithMockUser` to pretend to be logged in. The user supplied does not need to actually exist in the database.
+
 ## Appendix
 
 `kapt`: annotation processor for Kotlin.
