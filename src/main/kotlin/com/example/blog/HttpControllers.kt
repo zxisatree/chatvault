@@ -3,7 +3,6 @@ package com.example.blog
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
 import kotlin.jvm.optionals.getOrElse
 
 @RestController
@@ -49,28 +48,7 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
     }
 }
 
-@RestController
-@RequestMapping("/api/user")
-class UserController(private val userRepository: UserRepository) {
-
-    @GetMapping("/")
-    fun findAll() = userRepository.findAll()
-
-    @GetMapping("/{login}")
-    fun findOne(@PathVariable login: String) =
-        userRepository.findByLogin(login) ?: throw ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "This user does not exist"
-        )
-
-    @PostMapping("/")
-    fun register(@RequestBody body: Map<String, String>): ResponseEntity<String> {
-        val login = body.getOrElse("login") { throw InvalidRequestException("Invalid login") }
-        val firstname = body.getOrElse("firstname") { throw InvalidRequestException("Invalid firstname") }
-        val lastname = body.getOrElse("lastname") { throw InvalidRequestException("Invalid lastname") }
-        val description = body.getOrDefault("description", null)
-        val user = User(login, firstname, lastname, description)
-        userRepository.save(user)
-        return ResponseEntity.status(HttpStatus.CREATED).body("Registered user successfully")
-    }
-}
+//@RestController
+//@RequestMapping("/api/user")
+//class UserController(private val userRepository: UserRepository) {
+//}

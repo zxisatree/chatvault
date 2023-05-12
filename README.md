@@ -44,11 +44,13 @@ Run `./gradlew build -x test` in the root directory. The JAR file can be found i
 The `.env` and `env.properties` files contain secrets, and thus are not committed by default and ignored
 in `.gitignore`. Both files should be created in the root directory. The files require the following keys (
 replace `{items}` in curly braces with your own values):
+
 `env.properties`:
 
 * `JDBC_PSQL_URI=jdbc:postgresql://{host}:{postgres_port}/{postgres_db_name}`
 * `PSQL_USERNAME={postgres_username}`
 * `PSQL_PASSWORD={postgres_password}`
+* `SPRING_SECURITY_ADMIN_PASSWORD={spring_security_default_admin_password}`
 
 `.env`:
 

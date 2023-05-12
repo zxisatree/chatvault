@@ -18,7 +18,7 @@ class RepositoriesTests @Autowired constructor(
 
     @Test
     fun `When findByIdOrNull then return Article with temporary entries`() {
-        val newuser = User("unusedNewUser", "New", "User")
+        val newuser = DbUser("unusedNewUser", "password")
         entityManager.persist(newuser)
         val article = Article("unusedArticle", "Test article", "Lorem ipsum dolor sit amet", newuser)
         entityManager.persist(article) // only works if article.id is nullable and default value is null
@@ -31,10 +31,9 @@ class RepositoriesTests @Autowired constructor(
 
     @Test
     fun `When findByLogin then return User`() {
-        val johnDoe = User("johnDoe", "John", "Doe")
+        val johnDoe = DbUser("johnDoe", "password")
         val user = userRepository.findByLogin(johnDoe.login)
         assertThat(user?.login).isEqualTo(johnDoe.login)
-        assertThat(user?.firstname).isEqualTo(johnDoe.firstname)
-        assertThat(user?.lastname).isEqualTo(johnDoe.lastname)
+        assertThat(user?.password).isEqualTo(johnDoe.password)
     }
 }
