@@ -27,4 +27,4 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.4.2
       - name: Test with Gradle
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --no-daemon --info
