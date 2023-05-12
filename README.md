@@ -1,5 +1,5 @@
 # Kotlin Blog
-_A simple CRUD API_
+_A CRUD API to practice DevOps_
 
 [![Docker Compose](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml)
 [![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml)
@@ -7,7 +7,7 @@ _A simple CRUD API_
 CRUD blog backend written with Spring Boot and Mustache for HTML templates. A temporary PostgreSQL database is included in the docker image.
 
 ## Why?
-The aim of this project was to learn more about Spring Boot and CI/CD. Thus, the project is intentionally kept small and simple.
+The aim of this project is to learn more about Spring Boot and CI/CD. Thus, the project is intentionally kept small and simple.
 
 This repository can be used to resolve potential issues that might be found when using Spring Boot with Kotlin, which is not as common as Java and thus harder to find answers for.
 

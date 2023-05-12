@@ -1,7 +1,7 @@
 name: Gradle test on Windows
 on: push
 jobs:
-  test-windows:
+  windows_tests:
     runs-on: windows-latest
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
@@ -16,7 +16,7 @@ jobs:
         run: |
           Copy-Item .github/env.properties -Destination ./
           $Env:PGPASSWORD="postgres"
-          psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows-seed.sql
+          psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

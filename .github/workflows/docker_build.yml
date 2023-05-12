@@ -1,7 +1,7 @@
 name: Docker Compose build
 on: push
 jobs:
-  test:
+  docker_build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
