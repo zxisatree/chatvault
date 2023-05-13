@@ -3,7 +3,7 @@
 _A CRUD API to practice DevOps_
 
 [![Docker Compose build](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker_build.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker_build.yml)
-[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows-test.yml)
+[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows_test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows_test.yml)
 
 CRUD blog backend written with Spring Boot and Mustache for HTML templates. A temporary PostgreSQL database is included in the docker image.
 
@@ -43,7 +43,6 @@ The `.env` and `env.properties` files contain secrets, and thus are not committe
 * `JDBC_PSQL_URI=jdbc:postgresql://{host}:{postgres_port}/{postgres_db_name}`
 * `PSQL_USERNAME={postgres_username}`
 * `PSQL_PASSWORD={postgres_password}`
-* `SPRING_SECURITY_ADMIN_PASSWORD={spring_security_default_admin_password}`
 
 `.env`:
 
