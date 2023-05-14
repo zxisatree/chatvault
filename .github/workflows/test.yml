@@ -17,15 +17,17 @@ jobs:
         id: postgres
       - uses: actions/checkout@v3
       - if: matrix.platform == 'windows-latest'
-        name: Seed database (Windows)
+        name: Create env.properties and seed database (Windows)
         run: |
-          Copy-Item .github/env.properties -Destination ./
+          New-Item ./env.properties
+          "JDBC_PSQL_URI=${{JDBC_PSQL_URI}}`nPSQL_USERNAME=${{ POSTGRES_USER }}`nPSQL_PASSWORD=${{ POSTGRES_PASSWORD }}" | Out-File -FilePath ./env.properties
           $Env:PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
           psql -h localhost -d kotlin_blog -U ${{ secrets.POSTGRES_USER }} -f .github/psql_seed.sql
       - if: matrix.platform == 'ubuntu-latest'
-        name: Seed database (Ubuntu)
+        name: Create env.properties and seed database (Ubuntu)
         run: |
-          cp .github/env.properties ./
+          touch env.properties
+          printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
           PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}" psql -h localhost -d kotlin_blog -U ${{ secrets.POSTGRES_USER }} -f .github/psql_seed.sql
           chmod +x ./gradlew
       - name: Set up JDK 17
@@ -59,9 +61,10 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v3
-      - name: Seed database
+      - name: Create env.properties and seed database
         run: |
-          cp .github/env.properties ./
+          touch env.properties
+          printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
           PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}" psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d kotlin_blog -f .github/psql_seed.sql
       - name: Make gradlew executable
         run: chmod +x ./gradlew
