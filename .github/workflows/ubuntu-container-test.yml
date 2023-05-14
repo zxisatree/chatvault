@@ -1,7 +1,7 @@
 name: Gradle test on Ubuntu (container)
 on: push
 jobs:
-  ubuntu-container-test:
+  gradle-container-test:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     # Service containers to run with `ubuntu-container-test`
@@ -25,8 +25,8 @@ jobs:
       - name: Seed database
         run: |
           cp .github/env.properties ./
-          PGPASSWORD="postgres" psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
-          chmod +x ./gradlew
+          PGPASSWORD="postgres"
+          cat .github/windows_seed.sql | docker exec -i $(docker compose ps -q postgres) psql -U windows_tester -d kotlin_blog
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17

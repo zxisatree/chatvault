@@ -1,7 +1,7 @@
-name: Gradle tests
+name: Gradle test with action-setup-postgres
 on: push
 jobs:
-  tests:
+  gradle-action-test:
     strategy:
       matrix:
         platform: [ windows-latest, ubuntu-latest ]
@@ -27,6 +27,42 @@ jobs:
           cp .github/env.properties ./
           PGPASSWORD="postgres" psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
           chmod +x ./gradlew
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1.0.6
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2.4.2
+      - name: Test with Gradle
+        run: ./gradlew test --no-daemon
+
+  gradle-runner-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: windows_tester
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kotlin_blog
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v3
+      - name: Seed database
+        run: |
+          cp .github/env.properties ./
+          PGPASSWORD="postgres" psql -h localhost -U windows_tester -d kotlin_blog -f .github/windows_seed.sql
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
