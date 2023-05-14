@@ -26,6 +26,7 @@ jobs:
         run: |
           cp .github/env.properties ./
           PGPASSWORD="postgres" psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
+          chmod +x ./gradlew
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
