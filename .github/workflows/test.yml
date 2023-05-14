@@ -1,6 +1,7 @@
-name: Gradle test with action-setup-postgres
+name: Gradle test with
 on: push
 jobs:
+  # Uses action-setup-postgres
   gradle-action-test:
     strategy:
       matrix:
@@ -39,6 +40,7 @@ jobs:
       - name: Test with Gradle
         run: ./gradlew test --no-daemon
 
+  # Uses postgres on the runner machine
   gradle-runner-test:
     runs-on: ubuntu-latest
     services:
