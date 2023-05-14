@@ -3,7 +3,7 @@ on: push
 jobs:
   ubuntu-container-test:
     runs-on: ubuntu-latest
-    container: ubuntu-latest
+    container: ubuntu:latest
     # Service containers to run with `ubuntu-container-test`
     services:
       postgres:
