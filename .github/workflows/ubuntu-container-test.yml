@@ -1,0 +1,43 @@
+name: Gradle test on Ubuntu (container)
+on: push
+jobs:
+  ubuntu-container-test:
+    runs-on: ubuntu-latest
+    container: ubuntu-latest
+    # Service containers to run with `ubuntu-container-test`
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: windows_tester
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kotlin_blog
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Seed database
+        run: |
+          cp .github/env.properties ./
+          PGPASSWORD="postgres" psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
+          chmod +x ./gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1.0.6
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2.4.2
+      - name: Test with Gradle
+        run: ./gradlew test --no-daemon
+        
