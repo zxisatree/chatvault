@@ -48,7 +48,7 @@ class HtmlController(
         val title: String,
         val headline: String,
         val content: String,
-        val author: DbUser,
+        val author: Users,
         val addedAt: String
     )
 

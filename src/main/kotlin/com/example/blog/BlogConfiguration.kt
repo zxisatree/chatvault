@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.provisioning.JdbcUserDetailsManager
@@ -29,6 +28,10 @@ class BlogConfiguration {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .csrf()
+            .ignoringRequestMatchers("/login/**")
+            .ignoringRequestMatchers("/api/**")
+            .and()
             .authorizeHttpRequests()
             .requestMatchers("/api/**").hasRole("USER")
             .and()
@@ -53,30 +56,4 @@ class BlogConfiguration {
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
-
-    //    Seeds the database on every startup
-    //@Bean
-    //fun databaseInitializer(
-    //    userRepository: UserRepository,
-    //    articleRepository: ArticleRepository
-    //) = ApplicationRunner {
-    //
-    //    val johnDoe = userRepository.save(DbUser("johnDoe", "password"))
-    //    articleRepository.save(
-    //        Article(
-    //            title = "Lorem",
-    //            headline = "Lorem",
-    //            content = "dolor sit amet",
-    //            author = johnDoe
-    //        )
-    //    )
-    //    articleRepository.save(
-    //        Article(
-    //            title = "Ipsum",
-    //            headline = "Ipsum",
-    //            content = "dolor sit amet",
-    //            author = johnDoe
-    //        )
-    //    )
-    //}
 }

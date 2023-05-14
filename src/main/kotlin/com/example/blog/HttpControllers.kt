@@ -3,6 +3,7 @@ package com.example.blog
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import kotlin.jvm.optionals.getOrElse
 
 @RestController
@@ -18,9 +19,13 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
         articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
 
     @PostMapping("/")
-    fun createArticle(@RequestBody article: Article): ResponseEntity<String> {
-        article.author =
-            userRepository.findByLogin(article.author.login) ?: throw UserNotFoundException(article.author.login)
+    fun createArticle(@RequestBody body: Map<String, String>, principal: Principal): ResponseEntity<String> {
+        val article = Article(
+            body.getOrElse("title") { throw InvalidRequestException("Invalid title") },
+            body.getOrElse("headline") { throw InvalidRequestException("Invalid headline") },
+            body.getOrElse("content") { throw InvalidRequestException("Invalid content") },
+            userRepository.findByUsername(principal.name) ?: throw UserNotFoundException(principal.name),
+        )
         articleRepository.save(article)
         return ResponseEntity.status(HttpStatus.CREATED).body("Created article successfully")
     }
@@ -29,9 +34,11 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
     @PutMapping("/{id}")
     fun editArticle(
         @PathVariable id: String,
-        @RequestBody body: Map<String, String>
+        @RequestBody body: Map<String, String>,
+        principal: Principal
     ): ResponseEntity<String> {
         val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
+        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         foundArticle.title = body.getOrDefault("title", foundArticle.title)
         foundArticle.headline = body.getOrDefault("headline", foundArticle.headline)
         foundArticle.content = body.getOrDefault("content", foundArticle.content)
@@ -41,14 +48,17 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
 
     @OptIn(ExperimentalStdlibApi::class)
     @DeleteMapping("/{id}")
-    fun deleteArticle(@PathVariable id: String): ResponseEntity<String> {
+    fun deleteArticle(@PathVariable id: String, principal: Principal): ResponseEntity<String> {
         val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
+        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         articleRepository.deleteById(foundArticle.id!!)
         return ResponseEntity.noContent().build()
     }
 }
 
-//@RestController
-//@RequestMapping("/api/user")
-//class UserController(private val userRepository: UserRepository) {
-//}
+@RestController
+@RequestMapping("/api/user")
+class UserController(private val userRepository: UserRepository) {
+    @GetMapping("/")
+    fun getCurrentUser(principal: Principal) = userRepository.findByUsername(principal.name)?.username
+}

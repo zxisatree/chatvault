@@ -1,5 +1,6 @@
 package com.example.blog
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
@@ -11,15 +12,15 @@ class Article(
     var title: String,
     var headline: String,
     var content: String,
-    @ManyToOne var author: DbUser,
+    @ManyToOne var author: Users,
     var slug: String = title.toSlug(),
     var addedAt: LocalDateTime = LocalDateTime.now(),
     @Id @GeneratedValue var id: Long? = null
 )
 
 @Entity
-class DbUser(
-    var login: String,
-    var password: String,
-    @Id @GeneratedValue var id: Long? = null
+class Users(
+    @Id var username: String,
+    @Column(nullable = false) var password: String,
+    @Column(nullable = false) var enabled: Boolean
 )

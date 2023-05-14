@@ -31,7 +31,7 @@ CREATE TABLE public.article (
                                 headline character varying(255),
                                 slug character varying(255),
                                 title character varying(255),
-                                author_id bigint
+                                author_username character varying(255)
 );
 
 
@@ -52,48 +52,58 @@ CREATE SEQUENCE public.article_seq
 ALTER TABLE public.article_seq OWNER TO windows_tester;
 
 --
--- Name: db_user; Type: TABLE; Schema: public; Owner: windows_tester
+-- Name: authorities; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
-CREATE TABLE public.db_user (
-                                id bigint NOT NULL,
-                                login character varying(255),
-                                password character varying(255)
+CREATE TABLE public.authorities (
+                                    username character varying(50) NOT NULL,
+                                    authority character varying(50) NOT NULL
 );
 
 
-ALTER TABLE public.db_user OWNER TO windows_tester;
+ALTER TABLE public.authorities OWNER TO windows_tester;
 
 --
--- Name: db_user_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
+-- Name: users; Type: TABLE; Schema: public; Owner: windows_tester
 --
 
-CREATE SEQUENCE public.db_user_seq
-    START WITH 1
-    INCREMENT BY 50
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+CREATE TABLE public.users (
+                              username character varying(255) NOT NULL,
+                              enabled boolean NOT NULL,
+                              password character varying(255) NOT NULL
+);
 
 
-ALTER TABLE public.db_user_seq OWNER TO windows_tester;
+ALTER TABLE public.users OWNER TO windows_tester;
 
 --
 -- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: windows_tester
 --
 
-COPY public.article (id, added_at, content, headline, slug, title, author_id) FROM stdin;
-1	2023-05-12 21:18:27.871862	dolor sit amet	Lorem	lorem	Lorem	1
-2	2023-05-12 21:18:27.879881	dolor sit amet	Ipsum	ipsum	Ipsum	1
+COPY public.article (id, added_at, content, headline, slug, title, author_username) FROM stdin;
+1	2023-05-14 10:39:13.683961	dolor sit amet	Lorem	lorem	Lorem	user
+2	2023-05-14 10:39:13.730972	dolor sit amet	Ipsum	ipsum	Ipsum	user
 \.
 
 
 --
--- Data for Name: db_user; Type: TABLE DATA; Schema: public; Owner: windows_tester
+-- Data for Name: authorities; Type: TABLE DATA; Schema: public; Owner: windows_tester
 --
 
-COPY public.db_user (id, login, password) FROM stdin;
-1	johnDoe	password
+COPY public.authorities (username, authority) FROM stdin;
+admin	ROLE_ADMIN
+admin	ROLE_USER
+user	ROLE_USER
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: windows_tester
+--
+
+COPY public.users (username, enabled, password) FROM stdin;
+admin	t	$2a$10$6MN7h/YNEBbrNaiRioYBre1hdZNYFbHdtrGSXFNsRlRXN3kCCv74e
+user	t	$2a$10$fSWw5hjfa2HBNRaNafzAH.hgVa3YDx3ZK7TT5mbR08FxTnqIO34Mq
 \.
 
 
@@ -101,14 +111,7 @@ COPY public.db_user (id, login, password) FROM stdin;
 -- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: windows_tester
 --
 
-SELECT pg_catalog.setval('public.article_seq', 301, true);
-
-
---
--- Name: db_user_seq; Type: SEQUENCE SET; Schema: public; Owner: windows_tester
---
-
-SELECT pg_catalog.setval('public.db_user_seq', 251, true);
+SELECT pg_catalog.setval('public.article_seq', 101, true);
 
 
 --
@@ -120,19 +123,34 @@ ALTER TABLE ONLY public.article
 
 
 --
--- Name: db_user db_user_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
 --
 
-ALTER TABLE ONLY public.db_user
-    ADD CONSTRAINT db_user_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (username);
 
 
 --
--- Name: article FK1ltag0qcdodojepd6jqsxijht; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: ix_auth_username; Type: INDEX; Schema: public; Owner: windows_tester
+--
+
+CREATE UNIQUE INDEX ix_auth_username ON public.authorities USING btree (username, authority);
+
+
+--
+-- Name: authorities fk_authorities_users; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
+--
+
+ALTER TABLE ONLY public.authorities
+    ADD CONSTRAINT fk_authorities_users FOREIGN KEY (username) REFERENCES public.users(username);
+
+
+--
+-- Name: article fkd7fuj7re5bai6rvacjtef5ghy; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
 --
 
 ALTER TABLE ONLY public.article
-    ADD CONSTRAINT "FK1ltag0qcdodojepd6jqsxijht" FOREIGN KEY (author_id) REFERENCES public.db_user(id);
+    ADD CONSTRAINT fkd7fuj7re5bai6rvacjtef5ghy FOREIGN KEY (author_username) REFERENCES public.users(username);
 
 
 --
