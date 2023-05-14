@@ -21,4 +21,4 @@ jobs:
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
       - name: Build the stack
-        run: docker-compose build
+        run: docker compose build

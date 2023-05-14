@@ -1,8 +1,11 @@
-name: Gradle test on Windows
+name: Gradle tests
 on: push
 jobs:
-  windows_tests:
-    runs-on: windows-latest
+  tests:
+    strategy:
+      matrix:
+        platform: [ windows-latest, ubuntu-latest ]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
         with:
