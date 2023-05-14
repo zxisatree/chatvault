@@ -1,4 +1,4 @@
-name: Gradle test with
+name: Gradle test
 on: push
 jobs:
   # Uses action-setup-postgres
@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
         with:
-          username: windows_tester
-          password: postgres
+          username: ${{ secrets.POSTGRES_USER }}
+          password: ${{ secrets.POSTGRES_PASSWORD }}
           database: kotlin_blog
           port: 5432
         id: postgres
@@ -20,13 +20,13 @@ jobs:
         name: Seed database (Windows)
         run: |
           Copy-Item .github/env.properties -Destination ./
-          $Env:PGPASSWORD="postgres"
-          psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
+          $Env:PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          psql -h localhost -d kotlin_blog -U ${{ secrets.POSTGRES_USER }} -f .github/psql_seed.sql
       - if: matrix.platform == 'ubuntu-latest'
         name: Seed database (Ubuntu)
         run: |
           cp .github/env.properties ./
-          PGPASSWORD="postgres" psql -h localhost -d kotlin_blog -U windows_tester -f .github/windows_seed.sql
+          PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}" psql -h localhost -d kotlin_blog -U ${{ secrets.POSTGRES_USER }} -f .github/psql_seed.sql
           chmod +x ./gradlew
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -47,8 +47,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: windows_tester
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: kotlin_blog
         options: >-
           --health-cmd pg_isready
@@ -62,7 +62,7 @@ jobs:
       - name: Seed database
         run: |
           cp .github/env.properties ./
-          PGPASSWORD="postgres" psql -h localhost -U windows_tester -d kotlin_blog -f .github/windows_seed.sql
+          PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}" psql -h localhost -U ${{ secrets.POSTGRES_USER }} -d kotlin_blog -f .github/psql_seed.sql
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17

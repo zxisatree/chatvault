@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: article; Type: TABLE; Schema: public; Owner: windows_tester
+-- Name: article; Type: TABLE; Schema: public; Owner: compose_or_else
 --
 
 CREATE TABLE public.article (
@@ -35,10 +35,10 @@ CREATE TABLE public.article (
 );
 
 
-ALTER TABLE public.article OWNER TO windows_tester;
+ALTER TABLE public.article OWNER TO compose_or_else;
 
 --
--- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: windows_tester
+-- Name: article_seq; Type: SEQUENCE; Schema: public; Owner: compose_or_else
 --
 
 CREATE SEQUENCE public.article_seq
@@ -49,10 +49,10 @@ CREATE SEQUENCE public.article_seq
     CACHE 1;
 
 
-ALTER TABLE public.article_seq OWNER TO windows_tester;
+ALTER TABLE public.article_seq OWNER TO compose_or_else;
 
 --
--- Name: authorities; Type: TABLE; Schema: public; Owner: windows_tester
+-- Name: authorities; Type: TABLE; Schema: public; Owner: compose_or_else
 --
 
 CREATE TABLE public.authorities (
@@ -61,10 +61,10 @@ CREATE TABLE public.authorities (
 );
 
 
-ALTER TABLE public.authorities OWNER TO windows_tester;
+ALTER TABLE public.authorities OWNER TO compose_or_else;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: windows_tester
+-- Name: users; Type: TABLE; Schema: public; Owner: compose_or_else
 --
 
 CREATE TABLE public.users (
@@ -74,10 +74,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO windows_tester;
+ALTER TABLE public.users OWNER TO compose_or_else;
 
 --
--- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: windows_tester
+-- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
 COPY public.article (id, added_at, content, headline, slug, title, author_username) FROM stdin;
@@ -87,7 +87,7 @@ COPY public.article (id, added_at, content, headline, slug, title, author_userna
 
 
 --
--- Data for Name: authorities; Type: TABLE DATA; Schema: public; Owner: windows_tester
+-- Data for Name: authorities; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
 COPY public.authorities (username, authority) FROM stdin;
@@ -98,7 +98,7 @@ user	ROLE_USER
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: windows_tester
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
 COPY public.users (username, enabled, password) FROM stdin;
@@ -108,14 +108,14 @@ user	t	$2a$10$fSWw5hjfa2HBNRaNafzAH.hgVa3YDx3ZK7TT5mbR08FxTnqIO34Mq
 
 
 --
--- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: windows_tester
+-- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: compose_or_else
 --
 
 SELECT pg_catalog.setval('public.article_seq', 101, true);
 
 
 --
--- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.article
@@ -123,7 +123,7 @@ ALTER TABLE ONLY public.article
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.users
@@ -131,14 +131,14 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: ix_auth_username; Type: INDEX; Schema: public; Owner: windows_tester
+-- Name: ix_auth_username; Type: INDEX; Schema: public; Owner: compose_or_else
 --
 
 CREATE UNIQUE INDEX ix_auth_username ON public.authorities USING btree (username, authority);
 
 
 --
--- Name: authorities fk_authorities_users; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: authorities fk_authorities_users; Type: FK CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.authorities
@@ -146,7 +146,7 @@ ALTER TABLE ONLY public.authorities
 
 
 --
--- Name: article fkd7fuj7re5bai6rvacjtef5ghy; Type: FK CONSTRAINT; Schema: public; Owner: windows_tester
+-- Name: article fkd7fuj7re5bai6rvacjtef5ghy; Type: FK CONSTRAINT; Schema: public; Owner: compose_or_else
 --
 
 ALTER TABLE ONLY public.article

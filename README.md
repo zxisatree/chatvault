@@ -2,8 +2,8 @@
 
 _A CRUD API to practice DevOps_
 
-[![Docker Compose build](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker_build.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker_build.yml)
-[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows_test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/windows_test.yml)
+[![Docker Compose build](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml)
+[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml)
 
 CRUD blog backend written with Spring Boot and Mustache for HTML templates. A temporary PostgreSQL database is included in the docker image.
 
@@ -46,16 +46,19 @@ The `.env` and `env.properties` files contain secrets, and thus are not committe
 
 `.env`:
 
-* `DOCKER_SPRING_DATASOURCE_URL=jdbc:postgresql://{docker_service_name}:{docker_postgres_port}/{docker_postgres_db_name}`
-* `DOCKER_POSTGRES_DB_NAME={docker_postgres_db_name}`
-* `DOCKER_POSTGRES_USERNAME={docker_postgres_username}`
-* `DOCKER_POSTGRES_PASSWORD={docker_postgres_password}`
+* `SPRING_DATASOURCE_URL=jdbc:postgresql://{docker_service_name}:{docker_postgres_port}/{docker_postgres_db_name}`
+* `POSTGRES_DB={docker_postgres_db_name}`
+* `POSTGRES_USER={docker_postgres_username}`
+* `POSTGRES_PASSWORD={docker_postgres_password}`
 * `GRAFANA_PASSWORD={grafana_password}`
+
+`SPRING_DATASOURCE_URL` overwrites `spring.datasource.url` in `application.properties` that was set to `${JDBC_PSQL_URI}` at image build time. Since PostgreSQL is no longer running on `localhost`, we have to change the JDBC connection string to point to the container host `db` instead.
 
 Docker uses environment variables from a `.env` file by default. However, Spring Boot's `application.properties` throws an error if `.env` is used as the config file, so `env.properties` is used instead. The JAR file created does not include this `env.properties` file, so the Dockerfile includes a copy instruction to copy this file to the production folder.
 
-On Github Actions, `env.properties` does not exist. Thus, Github Secrets are used instead.
-See [here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) for how to create secrets for a repository.
+The building of the JAR file requires `env.properties`, so it is required to be in the root directory at the time of running the Docker build command. On the other hand, `.env` is only required at runtime.
+
+On Github Actions, these environment files do not exist as they contain confidential information and are not committed to the repository. Thus, Github Secrets are used instead.
 
 ## Project structure
 

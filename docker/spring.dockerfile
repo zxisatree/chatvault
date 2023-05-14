@@ -3,7 +3,7 @@ RUN mkdir -p /home/gradle/cache_home
 ENV GRADLE_USER_HOME /home/gradle/cache_home
 COPY build.gradle.kts /home/gradle/cache_code/
 WORKDIR /home/gradle/cache_code
-RUN gradle clean build -x bootJar
+RUN gradle clean build -x bootJar --no-daemon
 
 FROM gradle:jdk17 AS BUILD
 COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle

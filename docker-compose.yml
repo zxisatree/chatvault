@@ -2,31 +2,26 @@ version: '2'
 
 services:
   app:
-    image: 'docker-spring-boot-postgres:latest'
+    image: 'kotlin_blog:latest'
     build:
       context: .
       dockerfile: ./docker/spring.dockerfile
-    container_name: app
     depends_on:
-      - db
+      - docker_psql_db
     environment:
-      - SPRING_DATASOURCE_URL=${DOCKER_SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${DOCKER_POSTGRES_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${DOCKER_POSTGRES_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
     ports:
       - "1018:8080"
 
-  db:
+  docker_psql_db:
     image: 'postgres:13.1-alpine'
     build:
       context: .
       dockerfile: ./docker/postgres.dockerfile
-    container_name: db
     environment:
-      - POSTGRES_USER=${DOCKER_POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${DOCKER_POSTGRES_PASSWORD}
-      - POSTGRES_DB=${DOCKER_POSTGRES_DB_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=kotlin_blog
 
   prometheus:
     image: prom/prometheus:v2.38.0
