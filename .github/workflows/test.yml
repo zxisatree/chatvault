@@ -31,6 +31,12 @@ jobs:
           psql -h localhost -d kotlin_blog -U $Env:POSTGRES_USER -f .github/psql_seed.sql
       - if: matrix.platform == 'ubuntu-latest'
         name: Create env.properties and seed database (Ubuntu)
+        env:
+          JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
+          PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
+          PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
