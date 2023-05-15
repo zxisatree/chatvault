@@ -11,7 +11,7 @@ The backend server can be started by launching it as a standalone Spring Boot ap
 
 The following prerequisites are required for this project:
 
-* `.env` file in root directory (see [Environment variable file](#environment-variable-file) for more info about the environment file)
+* `.env` file in root directory (see [Environment variable file](#environment-variable-files) for more info about the environment file)
 * JDK 17
 * Kotlin compiler
 * PostgreSQL 14+
@@ -19,13 +19,13 @@ The following prerequisites are required for this project:
 
 ### Using the Docker image
 
-Run `docker compose up` in the root folder. The server is exposed on port 1018, Prometheus on port 1029 and Grafana on port 1040.
+Run `docker compose up` in the root folder. The server will be exposed on port 1018, Prometheus on port 1029 and Grafana on port 1040.
 
 ### Without Docker
 
-Create the database (with the user in the [`.env` file](#environment-variable-file) as the creator), and run `docker/docker-entrypoint-initdb.d/init.sql` to initialise the required tables. Then run `./gradlew bootRun` in the root directory to start the server.
+Create the database (with the user in the [`.env` file](#environment-variable-files) as the creator), and run `docker/docker-entrypoint-initdb.d/init.sql` to initialise the required tables. Then run `./gradlew bootRun` in the root directory to start the server on port 8080.
 
-## Environment variable files (`.env`, `env.properties`)
+## Environment variable files
 
 The `.env` and `env.properties` files contain secrets, and thus are not committed by default and ignored in `.gitignore`. The building of the JAR file requires `env.properties`, so it is required to be in the root directory at the time of running the Docker build command. On the other hand, `.env` is only required at runtime.
 
@@ -45,7 +45,7 @@ Both files should be created in the root directory. The files require the follow
 * `POSTGRES_PASSWORD={docker_postgres_password}`
 * `GRAFANA_PASSWORD={grafana_default_password}`
 
-`SPRING_DATASOURCE_URL` overwrites `spring.datasource.url` in `application.properties` that was set to `${JDBC_PSQL_URI}` at image build time. Since PostgreSQL is no longer running on `localhost`, we have to change the JDBC connection string to point to the container host `docker_psql_db` instead.
+`SPRING_DATASOURCE_URL` overwrites `spring.datasource.url` in `application.properties` that was set to `${JDBC_PSQL_URI}` at image build time. When using Docker, PostgreSQL will not be running on the default `localhost`, and this key points the JDBC connection string to the correct container host `docker_psql_db` instead.
 
 `POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` control the database and user created by the PostgreSQL image.
 
