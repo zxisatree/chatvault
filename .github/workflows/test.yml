@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - if: matrix.platform == 'windows-latest'
         name: Create env.properties and seed database (Windows)
-        environment:
+        env:
           JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
           PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
           PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
@@ -54,7 +54,7 @@ jobs:
     services:
       postgres:
         image: postgres
-        environment:
+        env:
           POSTGRES_USER: ${{secrets.POSTGRES_USER}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
           POSTGRES_DB: kotlin_blog
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Create env.properties and seed database
-        environment:
+        env:
           JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
           PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
           PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
