@@ -16,8 +16,8 @@ jobs:
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
         with:
-          username: ${POSTGRES_USER}
-          password: ${POSTGRES_PASSWORD}
+          username: "$POSTGRES_USER"
+          password: "$POSTGRES_PASSWORD"
           database: kotlin_blog
           port: 5432
         id: postgres
@@ -34,8 +34,7 @@ jobs:
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
-          PGPASSWORD="$POSTGRES_PASSWORD"
-          psql -h localhost -d kotlin_blog -U $POSTGRES_USER -f .github/psql_seed.sql
+          PGPASSWORD="$POSTGRES_PASSWORD" && psql -h localhost -d kotlin_blog -U $POSTGRES_USER -f .github/psql_seed.sql
           chmod +x ./gradlew
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -78,8 +77,7 @@ jobs:
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
-          PGPASSWORD="$POSTGRES_PASSWORD"
-          psql -h localhost -U $POSTGRES_USER -d kotlin_blog -f .github/psql_seed.sql
+          PGPASSWORD="$POSTGRES_PASSWORD" && psql -h localhost -U $POSTGRES_USER -d kotlin_blog -f .github/psql_seed.sql
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17
