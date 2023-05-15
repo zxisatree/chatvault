@@ -16,8 +16,8 @@ jobs:
     steps:
       - uses: ikalnytskyi/action-setup-postgres@v4
         with:
-          username: $POSTGRES_USER
-          password: $POSTGRES_PASSWORD
+          username: ${POSTGRES_USER}
+          password: ${POSTGRES_PASSWORD}
           database: kotlin_blog
           port: 5432
         id: postgres
@@ -62,8 +62,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+          POSTGRES_USER: "$POSTGRES_USER"
+          POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
           POSTGRES_DB: kotlin_blog
         options: >-
           --health-cmd pg_isready

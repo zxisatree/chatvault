@@ -3,13 +3,13 @@ on: push
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
+      PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
+      PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
     steps:
       - uses: actions/checkout@v3
       - name: Create env.properties
-        env:
-          JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
-          PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
-          PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
