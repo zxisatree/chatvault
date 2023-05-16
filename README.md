@@ -2,8 +2,8 @@
 
 _CRUD blog backend written in Kotlin with Spring Boot and Mustache for HTML templates_
 
-[![Docker Compose build](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/docker.yml)
-[![Gradle test on Windows](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/kotlin-blog/actions/workflows/test.yml)
+[![Docker Compose build](https://github.com/zxisatree/kotlin_blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin_blog/actions/workflows/docker.yml)
+[![Gradle test on Windows](https://github.com/zxisatree/kotlin_blog/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/kotlin_blog/actions/workflows/test.yml)
 
 ## Running the server
 
@@ -11,11 +11,11 @@ The backend server can be started by launching it as a standalone Spring Boot ap
 
 The following prerequisites are required for this project:
 
-* `.env` file in root directory (see [Environment variable file](#environment-variable-files) for more info about the environment file)
-* JDK 17
-* Kotlin compiler
-* PostgreSQL 14+
-* Docker/Docker Desktop (only for [Using the Docker image](#using-the-docker-image))
+- `.env` file in root directory (see [Environment variable file](#environment-variable-files) for more info about the environment file)
+- JDK 17
+- Kotlin compiler
+- PostgreSQL 14+
+- Docker/Docker Desktop (only for [Using the Docker image](#using-the-docker-image))
 
 ### Using the Docker image
 
@@ -33,32 +33,33 @@ Both files should be created in the root directory. The files require the follow
 
 `env.properties`:
 
-* `JDBC_PSQL_URI=jdbc:postgresql://{host}:{postgres_port}/{postgres_db_name}`
-* `PSQL_USER={postgres_username}`
-* `PSQL_PASSWORD={postgres_password}`
+- `JDBC_PSQL_URI=jdbc:postgresql://{host}:{postgres_port}/{postgres_db_name}`
+- `PSQL_USER={postgres_username}`
+- `PSQL_PASSWORD={postgres_password}`
 
 `.env`:
 
-* `SPRING_DATASOURCE_URL=jdbc:postgresql://{docker_service_name}:{docker_postgres_port}/{docker_postgres_db_name}`
-* `POSTGRES_DB={docker_postgres_db_name}`
-* `POSTGRES_USER={docker_postgres_username}`
-* `POSTGRES_PASSWORD={docker_postgres_password}`
-* `GRAFANA_PASSWORD={grafana_default_password}`
+- `SPRING_DATASOURCE_URL=jdbc:postgresql://{docker_service_name}:{docker_postgres_port}/{docker_postgres_db_name}`
+- `POSTGRES_DB={docker_postgres_db_name}`
+- `POSTGRES_USER={docker_postgres_username}`
+- `POSTGRES_PASSWORD={docker_postgres_password}`
+- `GRAFANA_PASSWORD={grafana_default_password}`
 
 `SPRING_DATASOURCE_URL` overwrites `spring.datasource.url` in `application.properties` that was set to `${JDBC_PSQL_URI}` at image build time. When using Docker, PostgreSQL will not be running on the default `localhost`, and this key points the JDBC connection string to the correct container host `docker_psql_db` instead.
 
-`POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` control the database and user created by the PostgreSQL image.
+`POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` affect the database and user created by the PostgreSQL image.
 
 ## Project structure
 
 `/src/main/kotlin/com.example.blog/`:
-`Advices.kt`: intercepts exceptions thrown by the application and sends HTTP responses back to the client
-`BlogApplication.kt`: main entry point
-`BlogConfiguration.kt`: configuration for the app
-`BlogProperties.kt`: configuration properties for the app
-`Entities.kt`: JPA representations of the tables in the database
-`Exceptions.kt`: custom exceptions
-`Extensions.kt`: utility functions
-`HtmlController.kt`: controller for rendering the main blog page using Mustache templates
-`HttpControllers.kt`: API controller
-`Repositories.kt`: Spring JPA repositories
+
+- `Advices.kt`: intercepts exceptions thrown by the application and sends HTTP responses back to the client
+- `BlogApplication.kt`: main entry point
+- `BlogConfiguration.kt`: configuration for the app
+- `BlogProperties.kt`: configuration properties for the app
+- `Entities.kt`: JPA representations of the tables in the database
+- `Exceptions.kt`: custom exceptions
+- `Extensions.kt`: utility functions
+- `HtmlController.kt`: controller for rendering the main blog page using Mustache templates
+- `HttpControllers.kt`: API controller
+- `Repositories.kt`: Spring JPA repositories
