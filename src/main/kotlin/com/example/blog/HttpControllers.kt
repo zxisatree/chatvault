@@ -2,9 +2,14 @@ package com.example.blog
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.messaging.handler.annotation.MessageMapping
+import org.springframework.messaging.handler.annotation.SendTo
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.util.HtmlUtils
 import java.security.Principal
 import kotlin.jvm.optionals.getOrElse
+
 
 @RestController
 @RequestMapping("/api/article")
@@ -61,4 +66,14 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
 class UserController(private val userRepository: UserRepository) {
     @GetMapping("/")
     fun getCurrentUser(principal: Principal) = userRepository.findByUsername(principal.name)?.username
+}
+
+@Controller
+class GreetingController {
+    @MessageMapping("/sendmessage")
+    @SendTo("/topic/chatroom")
+    fun greeting(message: Message): Message {
+        Thread.sleep(200) // simulated delay
+        return Message(HtmlUtils.htmlEscape(message.content!!))
+    }
 }
