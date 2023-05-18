@@ -47,7 +47,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus:1.11.0")
     implementation("org.webjars:webjars-locator-core")
-    implementation("org.webjars:sockjs-client:1.5.1")
     implementation("org.webjars:stomp-websocket:2.3.4")
     implementation("org.webjars:bootstrap:3.4.0")
 }

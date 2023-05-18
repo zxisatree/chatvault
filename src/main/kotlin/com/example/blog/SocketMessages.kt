@@ -1,4 +1,4 @@
 package com.example.blog
 
-class Message(var content: String?) {
+class Message(var username: String?, var content: String?, ) {
 }

@@ -1,59 +1,61 @@
-let stompClient = null;
-let connectButton = document.querySelector("#connect");
-let disconnectButton = document.querySelector("#disconnect");
+;(function () {
+    let stompClient = null;
 
-function setConnected(connected) {
-  if (connected) {
-    connectButton.setAttribute("disabled", "true");
-    disconnectButton.removeAttribute("disabled");
-  } else {
-    connectButton.removeAttribute("disabled");
-    disconnectButton.setAttribute("disabled", "true");
-  }
-  document.querySelector("#conversation").style.display = connected
-    ? "table"
-    : "none";
-  document.querySelector("#messages").innerHTML = "";
-}
+    let connectButton = document.querySelector("#connect");
+    let disconnectButton = document.querySelector("#disconnect");
 
-function connect() {
-  let socket = new SockJS("/chat");
-  stompClient = Stomp.over(socket);
-  stompClient.connect({}, function (frame) {
-    setConnected(true);
-    console.log("Connected: " + frame);
-    stompClient.subscribe("/topic/chatroom", function (greeting) {
-      console.log(`received ${greeting}`);
-      showMessage(JSON.parse(greeting.body).content);
-    });
-  });
-}
+    function setConnected(connected) {
+        if (connected) {
+            connectButton.setAttribute("disabled", "true");
+            disconnectButton.removeAttribute("disabled");
+        } else {
+            connectButton.removeAttribute("disabled");
+            disconnectButton.setAttribute("disabled", "true");
+        }
+        document.querySelector("#conversation").style.display = connected
+            ? "table"
+            : "none";
+        document.querySelector("#messages").innerHTML = "";
+    }
 
-function disconnect() {
-  if (stompClient !== null) {
-    stompClient.disconnect();
-  }
-  setConnected(false);
-  console.log("Disconnected");
-}
+    function connect() {
+        stompClient = Stomp.client("ws://localhost:8080/chat");
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log("Connected: " + frame);
+            stompClient.subscribe("/topic/chatroom", function (greeting) {
+                console.log(`received ${greeting}`);
+                showMessage(JSON.parse(greeting.body).content);
+            });
+        });
+    }
 
-function sendName() {
-  stompClient.send(
-    "/app/sendmessage",
-    {},
-    JSON.stringify({
-      content: document.querySelector("#content").value,
-    })
-  );
-}
+    function disconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
 
-function showMessage(message) {
-  const message_cell = (document.createElement("td").innerHTML = message);
-  const new_row = document.createElement("tr");
-  new_row.append(message_cell);
-  document.querySelector("#messages").append(new_row);
-}
+    function sendName() {
+        stompClient.send(
+            "/app/sendmessage",
+            {},
+            JSON.stringify({
+                content: document.querySelector("#content").value,
+            })
+        );
+    }
 
-connectButton.addEventListener("click", connect);
-disconnectButton.addEventListener("click", disconnect);
-document.querySelector("#send").addEventListener("click", sendName);
+    function showMessage(message) {
+        const message_cell = (document.createElement("td").innerHTML = message);
+        const new_row = document.createElement("tr");
+        new_row.append(message_cell);
+        document.querySelector("#messages").append(new_row);
+    }
+
+    connectButton.addEventListener("click", connect);
+    disconnectButton.addEventListener("click", disconnect);
+    document.querySelector("#send").addEventListener("click", sendName);
+})();

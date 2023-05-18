@@ -67,6 +67,7 @@ class BlogConfiguration : WebSocketMessageBrokerConfigurer {
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/chat").withSockJS()
+        registry.addEndpoint("/chatSock").withSockJS()
+        registry.addEndpoint("/chat")
     }
 }
