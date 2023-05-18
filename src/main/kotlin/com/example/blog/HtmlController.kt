@@ -9,7 +9,6 @@ import kotlin.jvm.optionals.getOrElse
 @Controller
 class HtmlController(
     private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository,
     private val properties: BlogProperties
 ) {
 

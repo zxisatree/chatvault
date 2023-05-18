@@ -10,10 +10,12 @@ import org.springframework.web.util.HtmlUtils
 import java.security.Principal
 import kotlin.jvm.optionals.getOrElse
 
-
 @RestController
 @RequestMapping("/api/article")
-class ArticleController(private val articleRepository: ArticleRepository, private val userRepository: UserRepository) {
+class ArticleController(
+    private val articleRepository: ArticleRepository,
+    private val userRepository: UserRepository
+) {
 
     @GetMapping("/")
     fun findAll() = articleRepository.findAllByOrderByAddedAtDesc()
@@ -42,7 +44,8 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
         principal: Principal
     ): ResponseEntity<String> {
         val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
-        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .build()
         foundArticle.title = body.getOrDefault("title", foundArticle.title)
         foundArticle.content = body.getOrDefault("content", foundArticle.content)
         articleRepository.save(foundArticle)
@@ -53,7 +56,8 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
     @DeleteMapping("/{id}")
     fun deleteArticle(@PathVariable id: String, principal: Principal): ResponseEntity<String> {
         val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
-        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .build()
         articleRepository.deleteById(foundArticle.id!!)
         return ResponseEntity.noContent().build()
     }
@@ -67,7 +71,7 @@ class UserController(private val userRepository: UserRepository) {
 }
 
 @Controller
-class GreetingController {
+class ChatroomController {
     @MessageMapping("/sendmessage")
     @SendTo("/topic/chatroom")
     fun greeting(message: Message): Message {

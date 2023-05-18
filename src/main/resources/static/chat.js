@@ -12,9 +12,6 @@
             connectButton.removeAttribute("disabled");
             disconnectButton.setAttribute("disabled", "true");
         }
-        // document.querySelector("#conversation").style.display = connected
-        //     ? "table"
-        //     : "none";
         document.querySelector("#messages").innerHTML = "";
     }
 

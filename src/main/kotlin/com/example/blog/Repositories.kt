@@ -2,10 +2,10 @@ package com.example.blog
 
 import org.springframework.data.repository.CrudRepository
 
-interface ArticleRepository : CrudRepository<Article, Long> {
+interface ArticleRepository: CrudRepository<Article, Long> {
     fun findAllByOrderByAddedAtDesc(): Iterable<Article>
 }
 
-interface UserRepository : CrudRepository<Users, Long> {
+interface UserRepository: CrudRepository<Users, Long> {
     fun findByUsername(username: String): Users?
 }
