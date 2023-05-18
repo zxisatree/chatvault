@@ -28,8 +28,6 @@ CREATE TABLE public.article (
                                 id bigint NOT NULL,
                                 added_at timestamp(6) without time zone,
                                 content character varying(255),
-                                headline character varying(255),
-                                slug character varying(255),
                                 title character varying(255),
                                 author_username character varying(255)
 );
@@ -80,9 +78,9 @@ ALTER TABLE public.users OWNER TO compose_or_else;
 -- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: compose_or_else
 --
 
-COPY public.article (id, added_at, content, headline, slug, title, author_username) FROM stdin;
-1	2023-05-14 10:39:13.683961	dolor sit amet	Lorem	lorem	Lorem	user
-2	2023-05-14 10:39:13.730972	dolor sit amet	Ipsum	ipsum	Ipsum	user
+COPY public.article (id, added_at, content, title, author_username) FROM stdin;
+1	2023-05-18 11:26:38.247062	dolor sit amet	Lorem	user
+2	2023-05-18 11:26:38.30906	dolor sit amet	Ipsum	user
 \.
 
 
@@ -111,7 +109,7 @@ user	t	$2a$10$fSWw5hjfa2HBNRaNafzAH.hgVa3YDx3ZK7TT5mbR08FxTnqIO34Mq
 -- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: compose_or_else
 --
 
-SELECT pg_catalog.setval('public.article_seq', 101, true);
+SELECT pg_catalog.setval('public.article_seq', 801, true);
 
 
 --

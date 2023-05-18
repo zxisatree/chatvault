@@ -16,7 +16,8 @@
     }
 
     function connect() {
-        stompClient = Stomp.client("ws://localhost:8080/chat");
+        console.log(`Connecting to ws://${location.host}/chat`)
+        stompClient = Stomp.client(`ws://${location.host}/chat`);
         stompClient.connect({}, function (frame) {
             setConnected(true);
             // console.log("Connected: " + frame);

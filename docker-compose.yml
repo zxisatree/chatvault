@@ -10,7 +10,6 @@ services:
       - docker_psql_db
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-#      - SPRING_DATASOURCE_USERNAME=no_such_user
     ports:
       - "1018:8080"
 

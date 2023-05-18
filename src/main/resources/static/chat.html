@@ -4,7 +4,6 @@
     <title>Hello WebSocket</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/index.css" rel="stylesheet">
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/chat.js" defer></script>
 </head>
@@ -19,6 +18,7 @@
         <div class="col-md-6">
             <form class="form-inline" onsubmit="event.preventDefault()">
                 <div class="form-group">
+<!--                    <input type="text" id="host" class="form-control" placeholder="Enter host and port (e.g. localhost:8080)">-->
                     <label for="connect">WebSocket connection:</label>
                     <button id="connect" class="btn btn-default" type="submit">Connect</button>
                     <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
