@@ -34,9 +34,7 @@ class HtmlController(
 
     fun Article.render() = RenderedArticle(
         id!!,
-        slug,
         title,
-        headline,
         content,
         author,
         addedAt.format()
@@ -44,9 +42,7 @@ class HtmlController(
 
     data class RenderedArticle(
         val id: Long,
-        val slug: String,
         val title: String,
-        val headline: String,
         val content: String,
         val author: Users,
         val addedAt: String

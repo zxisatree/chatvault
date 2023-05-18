@@ -27,7 +27,6 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
     fun createArticle(@RequestBody body: Map<String, String>, principal: Principal): ResponseEntity<String> {
         val article = Article(
             body.getOrElse("title") { throw InvalidRequestException("Invalid title") },
-            body.getOrElse("headline") { throw InvalidRequestException("Invalid headline") },
             body.getOrElse("content") { throw InvalidRequestException("Invalid content") },
             userRepository.findByUsername(principal.name) ?: throw UserNotFoundException(principal.name),
         )
@@ -45,7 +44,6 @@ class ArticleController(private val articleRepository: ArticleRepository, privat
         val foundArticle = articleRepository.findById(id.toLong()).getOrElse { throw ArticleNotFoundException(id) }
         if (foundArticle.author.username != principal.name) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         foundArticle.title = body.getOrDefault("title", foundArticle.title)
-        foundArticle.headline = body.getOrDefault("headline", foundArticle.headline)
         foundArticle.content = body.getOrDefault("content", foundArticle.content)
         articleRepository.save(foundArticle)
         return ResponseEntity.status(HttpStatus.OK).body("Updated article successfully")
@@ -74,6 +72,6 @@ class GreetingController {
     @SendTo("/topic/chatroom")
     fun greeting(message: Message): Message {
         Thread.sleep(200) // simulated delay
-        return Message(HtmlUtils.htmlEscape(message.content!!))
+        return Message(HtmlUtils.htmlEscape(message.username!!), HtmlUtils.htmlEscape(message.content!!))
     }
 }
