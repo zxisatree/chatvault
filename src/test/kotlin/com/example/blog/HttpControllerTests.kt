@@ -26,15 +26,15 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `List articles`() {
         val johnDoe = Users("johnDoe", "password", true)
-        val loremArticle = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
-        val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", johnDoe)
+        val loremArticle = Article("Lorem", "dolor sit amet", johnDoe)
+        val ipsumArticle = Article("Ipsum", "dolor sit amet", johnDoe)
         every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(loremArticle, ipsumArticle)
         mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("\$.[0].author.username").value(johnDoe.username))
-            .andExpect(jsonPath("\$.[0].slug").value(loremArticle.slug))
+            .andExpect(jsonPath("\$.[0].title").value(loremArticle.title))
             .andExpect(jsonPath("\$.[1].author.username").value(johnDoe.username))
-            .andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
+            .andExpect(jsonPath("\$.[1].title").value(ipsumArticle.title))
     }
 }

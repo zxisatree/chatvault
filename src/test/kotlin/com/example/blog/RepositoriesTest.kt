@@ -10,8 +10,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 
-
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RepositoriesTests @Autowired constructor(
@@ -22,14 +20,13 @@ class RepositoriesTests @Autowired constructor(
 
     @Test
     fun `When findByIdOrNull then return Article with temporary entries`() {
-        val newuser = Users("unusedNewUser", "password", true)
-        entityManager.persist(newuser)
-        val article = Article("unusedArticle", "Test article", "Lorem ipsum dolor sit amet", newuser)
+        val newUser = Users("anonymous", "password", true)
+        entityManager.persist(newUser)
+        val article = Article("First article", "Lorem ipsum dolor sit amet", newUser)
         entityManager.persist(article) // only works if article.id is nullable and default value is null
         entityManager.flush()
         val found = articleRepository.findByIdOrNull(article.id!!)
         assertThat(found?.title).isEqualTo(article.title)
-        assertThat(found?.headline).isEqualTo(article.headline)
         assertThat(found?.content).isEqualTo(article.content)
     }
 
