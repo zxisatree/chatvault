@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Hello WebSocket</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/index.css" rel="stylesheet">
+  <head>
+    <title>Chatroom</title>
+    <link href="/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/chat.js" defer></script>
-</head>
-<body>
-<noscript>
-    <h2 style="color: #ff0000">
-        Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!
-    </h2>
-</noscript>
-<div id="main-content" class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline" onsubmit="event.preventDefault()">
-                <div class="form-group">
-                    <input type="text" id="room" class="form-control" value="chatroom" placeholder="What room do you want to enter?">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="form-inline" onsubmit="event.preventDefault()">
-                <div class="form-group">
-                    <label for="content">Send a message:</label>
-                    <input type="text" id="content" class="form-control" placeholder="Your message here...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
-            </form>
-        </div>
+    <script type="text/javascript" src="/chat.js" defer></script>
+  </head>
+  <body>
+    <noscript>
+      <div class="text-lg">
+        Seems your browser doesn't support Javascript! Websocket relies on
+        Javascript being enabled. Please enable Javascript and reload this page!
+      </div>
+    </noscript>
+    <div id="main-content" class="m-2">
+      <div class="flex-col">
+        <form class="flex w-full h-min p-1" onsubmit="event.preventDefault()">
+          <div>
+            <label for="room">Chatroom:</label>
+            <input
+              type="text"
+              id="room"
+              value="chatroom"
+              placeholder="What room do you want to enter?"
+            />
+          </div>
+          <button
+            id="connect"
+            class="ml-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+            type="submit"
+          >
+            Connect
+          </button>
+        </form>
+        <form class="p-1" onsubmit="event.preventDefault()">
+          <label for="content">Send a message:</label>
+          <input type="text" id="content" placeholder="Your message here..." />
+          <button
+            id="send"
+            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+            type="submit"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+      <div class="border-t-2 border-gray-500 pt-1">
+        <table id="conversation" class="w-full">
+          <thead>
+            <tr class="bg-gray-300">
+              <th>Messages</th>
+            </tr>
+          </thead>
+          <tbody id="messages"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Messages</th>
-                    </tr>
-                </thead>
-                <tbody id="messages"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-</body>
+  </body>
 </html>

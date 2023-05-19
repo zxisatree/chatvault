@@ -11,8 +11,8 @@ import org.springframework.web.util.HtmlUtils
 class SocketController(private val userList: UserList) {
     @SubscribeMapping("/topic/{chatroom}")
     fun enterChatroom(): Message {
-        println("There are ${userList.userCount()} users")
-        return Message(HtmlUtils.htmlEscape("server"), "There are ${userList.userCount()} users in chatroom")
+        val userCount = userList.userCount()
+        return Message(HtmlUtils.htmlEscape("server"), "There ${if (userCount >= 2) "are $userCount users" else "is $userCount user"} in the chatroom")
     }
 
     @MessageMapping("/send/{chatroom}")

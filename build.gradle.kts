@@ -48,7 +48,7 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:1.11.0")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:stomp-websocket:2.3.4")
-    implementation("org.webjars:bootstrap:3.4.0")
+    implementation("org.webjars.npm:tailwindcss:3.3.2")
 }
 
 tasks.withType<KotlinCompile> {
