@@ -22,3 +22,6 @@ class Users(
     @Column(nullable = false) var password: String,
     @Column(nullable = false) var enabled: Boolean
 )
+
+class Message(var username: String?, var content: String?) {
+}

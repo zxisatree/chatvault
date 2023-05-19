@@ -2,6 +2,7 @@ package com.example.blog
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Description
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -65,12 +66,24 @@ class BlogConfiguration : WebSocketMessageBrokerConfigurer {
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
+        // Prefix for chatroom endpoints
         config.enableSimpleBroker("/topic")
-        config.setApplicationDestinationPrefixes("/app")
     }
 
+    // Initial STOMP connection endpoint
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/chatSock").withSockJS()
         registry.addEndpoint("/chat")
+    }
+
+    @Bean
+    @Description("Listens to dis/connect events")
+    fun connectionListener(): ConnectionListener {
+        return ConnectionListener()
+    }
+
+    @Bean
+    @Description("Keeps track of connected users")
+    fun userList(): UserList {
+        return UserList()
     }
 }

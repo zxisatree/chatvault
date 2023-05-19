@@ -1,5 +1,6 @@
 ;(function () {
     let stompClient = null;
+    let chatroom = "";
 
     let connectButton = document.querySelector("#connect");
     let disconnectButton = document.querySelector("#disconnect");
@@ -16,14 +17,20 @@
     }
 
     function connect() {
+        chatroom = document.querySelector("#room").value
+        if (chatroom === "") {
+            console.log("Empty chatroom name not allowed");
+            return;
+        }
         console.log(`Connecting to ws://${location.host}/chat`)
         stompClient = Stomp.client(`ws://${location.host}/chat`);
         stompClient.connect({}, function (frame) {
             setConnected(true);
-            // console.log("Connected: " + frame);
-            stompClient.subscribe("/topic/chatroom", function (receivedMessage) {
+            console.log("Connected: " + frame);
+            console.log(`Subscribing to /topic/${chatroom}`)
+            stompClient.subscribe(`/topic/${chatroom}`, function (receivedMessage) {
                 const parsedBody = JSON.parse(receivedMessage.body)
-                showMessage(parsedBody.username, parsedBody.content);
+                showMessage(parsedBody);
             });
         });
     }
@@ -38,7 +45,7 @@
 
     function sendName() {
         stompClient.send(
-            "/app/sendmessage",
+            `/send/${chatroom}`,
             {},
             JSON.stringify({
                 username: "anonymous",
@@ -47,8 +54,8 @@
         );
     }
 
-    function showMessage(username, content) {
-        const message_cell = (document.createElement("td").innerHTML = `${username}: ${content}`);
+    function showMessage({username, content}) {
+        const message_cell = (document.createElement("td").innerHTML = `${username ? username + ": " : ""}${content}`);
         const new_row = document.createElement("tr");
         new_row.append(message_cell);
         document.querySelector("#messages").append(new_row);
