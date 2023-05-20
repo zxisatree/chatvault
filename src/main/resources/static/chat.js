@@ -16,13 +16,17 @@
 			stompClient.connect({}, function (frame) {
 				console.log("Connected: " + frame);
 				connectButton.innerHTML = "Disconnect";
+				stompClient.subscribe(
+					`/info/${chatroom}`,
+					(receivedMessage) => {
+						const parsedBody = JSON.parse(receivedMessage.body);
+						showIMessage(parsedBody);
+					}
+				);
 				// console.log(`Subscribing to /topic/${chatroom}`);
 				stompClient.subscribe(`/topic/${chatroom}`, function (receivedMessage) {
 					const parsedBody = JSON.parse(receivedMessage.body);
-					showMessage(
-						(parsedBody.username ? parsedBody.username + ": " : "") +
-						parsedBody.content
-					);
+					showIMessage(parsedBody);
 				});
 			});
 		} else {
@@ -43,6 +47,24 @@
 				content: document.querySelector("#content").value,
 			})
 		);
+	}
+
+	function showIMessage(message) {
+		if (message.isServerMessage) {
+			showServerMessage(message.content)
+		} else {
+			showMessage((message.username ? message.username + ": " : "") +
+				message.content)
+		}
+	}
+
+	function showServerMessage(content) {
+		const message_cell = document.createElement("td");
+		message_cell.innerHTML = content;
+		const new_row = document.createElement("tr");
+		new_row.append(message_cell);
+		new_row.classList.add("text-red-500", "font-bold");
+		document.querySelector("#messages").append(new_row);
 	}
 
 	function showMessage(content) {

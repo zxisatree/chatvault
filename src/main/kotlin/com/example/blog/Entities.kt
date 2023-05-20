@@ -23,5 +23,15 @@ class Users(
     @Column(nullable = false) var enabled: Boolean
 )
 
-class Message(var username: String?, var content: String?) {
+interface IMessage {
+    val isServerMessage: Boolean
+    val content: String
+}
+
+data class Message(override val content: String, val username: String): IMessage {
+    override val isServerMessage: Boolean = false
+}
+
+data class ServerMessage(override val content: String): IMessage {
+    override val isServerMessage: Boolean = true
 }

@@ -15,4 +15,8 @@ class UserList() {
     }
 
     fun userCount(): Int = onlineUsers.size
+
+    override fun toString(): String {
+        return onlineUsers.joinToString()
+    }
 }
