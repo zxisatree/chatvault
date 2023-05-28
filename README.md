@@ -2,8 +2,8 @@
 
 _CRUD blog backend written in Kotlin with Spring Boot and Mustache for HTML templates_
 
-[![Docker Compose build](https://github.com/zxisatree/kotlin_blog/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/kotlin_blog/actions/workflows/docker.yml)
-[![Gradle test on Windows](https://github.com/zxisatree/kotlin_blog/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/kotlin_blog/actions/workflows/test.yml)
+[![Docker Compose build](https://github.com/zxisatree/chatvault/actions/workflows/docker.yml/badge.svg)](https://github.com/zxisatree/chatvault/actions/workflows/docker.yml)
+[![Gradle test on Windows](https://github.com/zxisatree/chatvault/actions/workflows/test.yml/badge.svg)](https://github.com/zxisatree/chatvault/actions/workflows/test.yml)
 
 ## Running the server
 

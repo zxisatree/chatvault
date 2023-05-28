@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

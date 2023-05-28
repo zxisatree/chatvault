@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 class ArticleNotFoundException(slug: String) : RuntimeException("Could not find article $slug")
 

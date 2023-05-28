@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener

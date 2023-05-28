@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

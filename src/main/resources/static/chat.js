@@ -4,7 +4,7 @@
 	let connected = false;
 	let connectButton = document.querySelector("#connect");
 
-	function connect() {
+	async function connect() {
 		if (!connected) {
 			connected = true;
 			chatroom = document.querySelector("#room").value;
@@ -12,8 +12,15 @@
 				console.log("Empty chatroom name not allowed");
 				return;
 			}
+			const headers = {}
+			const csrfResult = await fetch("http://localhost:8080/csrf")
+			const csrfToken = await csrfResult.json()
+			headers[csrfToken.headerName] = csrfToken.token
+			// headers["X-AUTH-TOKEN"] = getCookie("JSESSIONID")
+			// console.log("headers:")
+			// console.log(headers)
 			stompClient = Stomp.client(`ws://${location.host}/chat`);
-			stompClient.connect({}, function (frame) {
+			stompClient.connect(headers, function (frame) {
 				console.log("Connected: " + frame);
 				connectButton.innerHTML = "Disconnect";
 				stompClient.subscribe(

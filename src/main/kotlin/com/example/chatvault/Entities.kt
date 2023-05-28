@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

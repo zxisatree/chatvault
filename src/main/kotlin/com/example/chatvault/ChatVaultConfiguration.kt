@@ -1,13 +1,17 @@
-package com.example.blog
+package com.example.chatvault
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Description
+import org.springframework.messaging.Message
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
+import org.springframework.security.authorization.AuthorizationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager
 import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -20,8 +24,9 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableWebSecurity
+@EnableWebSocketSecurity
 @EnableWebSocketMessageBroker
-class BlogConfiguration : WebSocketMessageBrokerConfigurer {
+class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     @Bean
     fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
@@ -35,6 +40,7 @@ class BlogConfiguration : WebSocketMessageBrokerConfigurer {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf()
+            //.disable()
             .ignoringRequestMatchers("/login/**")
             .ignoringRequestMatchers("/api/**")
             .and()
@@ -44,6 +50,9 @@ class BlogConfiguration : WebSocketMessageBrokerConfigurer {
             .authorizeHttpRequests()
             .requestMatchers("/actuator/**").hasRole("ADMIN")
             .and()
+            //.authorizeHttpRequests()
+            //.requestMatchers("/**").hasRole("USER")
+            //.and()
             .authorizeHttpRequests()
             .anyRequest().permitAll()
             .and()
@@ -63,6 +72,14 @@ class BlogConfiguration : WebSocketMessageBrokerConfigurer {
     @Bean
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun messageAuthorizationManager(messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager<Message<*>> {
+        //messages.simpDestMatchers("/**").hasRole("USER")
+        messages.anyMessage().permitAll() //THIS WORKS
+        return messages.build()
+        //return AuthorityAuthorizationManager.hasRole("User")
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {

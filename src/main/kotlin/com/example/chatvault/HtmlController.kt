@@ -1,4 +1,4 @@
-package com.example.blog
+package com.example.chatvault
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

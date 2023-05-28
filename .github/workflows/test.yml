@@ -12,7 +12,7 @@ jobs:
         with:
           username: ${{secrets.POSTGRES_USER}}
           password: ${{secrets.POSTGRES_PASSWORD}}
-          database: kotlin_blog
+          database: chatvault
           port: 5432
         id: postgres
       - uses: actions/checkout@v3
@@ -22,13 +22,13 @@ jobs:
           New-Item ./env.properties
           "JDBC_PSQL_URI=${{secrets.JDBC_PSQL_URI}}`nPSQL_USER=${{secrets.PSQL_USER}}`nPSQL_PASSWORD=${{secrets.PSQL_PASSWORD}}" | Out-File -FilePath ./env.properties
           $Env:PGPASSWORD="${{secrets.POSTGRES_PASSWORD}}"
-          psql -h localhost -d kotlin_blog -U ${{secrets.POSTGRES_USER}} -f .github/psql_seed.sql
+          psql -h localhost -d chatvault -U ${{secrets.POSTGRES_USER}} -f .github/psql_seed.sql
       - if: matrix.platform == 'ubuntu-latest'
         name: Create env.properties and seed database (Ubuntu)
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USER=%s\nPSQL_PASSWORD=%s" "${{secrets.JDBC_PSQL_URI}}" "${{secrets.PSQL_USER}}" "${{secrets.PSQL_PASSWORD}}" >> env.properties
-          PGPASSWORD="${{secrets.POSTGRES_PASSWORD}}" psql -h localhost -d kotlin_blog -U ${{secrets.POSTGRES_USER}} -f .github/psql_seed.sql
+          PGPASSWORD="${{secrets.POSTGRES_PASSWORD}}" psql -h localhost -d chatvault -U ${{secrets.POSTGRES_USER}} -f .github/psql_seed.sql
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17
@@ -52,7 +52,7 @@ jobs:
         env:
           POSTGRES_USER: ${{secrets.POSTGRES_USER}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
-          POSTGRES_DB: kotlin_blog
+          POSTGRES_DB: chatvault
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -72,7 +72,7 @@ jobs:
         run: |
           touch env.properties
           printf "JDBC_PSQL_URI=%s\nPSQL_USER=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USER" "$PSQL_PASSWORD" >> env.properties
-          PGPASSWORD="$POSTGRES_PASSWORD" psql -h localhost -U $POSTGRES_USER -d kotlin_blog -f .github/psql_seed.sql
+          PGPASSWORD="$POSTGRES_PASSWORD" psql -h localhost -U $POSTGRES_USER -d chatvault -f .github/psql_seed.sql
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Set up JDK 17

@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-messaging")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.testng:testng:7.7.0")
@@ -48,7 +49,6 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:1.11.0")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:stomp-websocket:2.3.4")
-    implementation("org.webjars.npm:tailwindcss:3.3.2")
 }
 
 tasks.withType<KotlinCompile> {

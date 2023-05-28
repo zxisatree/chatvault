@@ -2,7 +2,7 @@ version: '2'
 
 services:
   app:
-    image: 'kotlin_blog:latest'
+    image: 'chatvault:latest'
     build:
       context: .
       dockerfile: ./docker/spring.dockerfile
@@ -21,7 +21,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=kotlin_blog
+      - POSTGRES_DB=chatvault
 
 #  prometheus:
 #    image: prom/prometheus:v2.38.0
