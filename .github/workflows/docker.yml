@@ -1,4 +1,4 @@
-name: Docker Compose build and push
+name: Docker Compose build
 on: push
 jobs:
   docker:
