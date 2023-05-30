@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableConfigurationProperties(BlogProperties::class)
-class BlogApplication
+class ChatVault
 
 fun main(args: Array<String>) {
-    runApplication<BlogApplication>(*args)
+    runApplication<ChatVault>(*args)
 }

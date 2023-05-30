@@ -36,7 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+tailwind.config.js
 /prometheus/data
 /grafana
 /env.properties
 /.env
+*.log
