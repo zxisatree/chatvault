@@ -12,7 +12,7 @@ WORKDIR /home/gradle/chatvault/
 RUN gradle assemble -x test --no-daemon
 
 FROM eclipse-temurin:17-jre
-ARG JAR_FILE=blog-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=chatvault-0.0.1-SNAPSHOT.jar
 COPY --from=BUILD /home/gradle/chatvault/build/libs/${JAR_FILE} chatvault.jar
 COPY env.properties ./
 EXPOSE 8080
