@@ -1,5 +1,6 @@
 package com.example.chatvault
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Description
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor
 import javax.sql.DataSource
 
 
@@ -77,7 +79,8 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     @Bean
     fun messageAuthorizationManager(messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager<Message<*>> {
         //messages.simpDestMatchers("/**").hasRole("USER")
-        messages.anyMessage().permitAll() //THIS WORKS
+        //messages.anyMessage().permitAll()
+        messages.anyMessage().hasRole("USER")
         return messages.build()
         //return AuthorityAuthorizationManager.hasRole("User")
     }
@@ -89,7 +92,8 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
 
     // Initial STOMP connection endpoint
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/chat")
+        val handshakeInterceptor = HttpSessionHandshakeInterceptor(listOf("SPRING_SECURITY_CONTEXT"))
+        registry.addEndpoint("/chat").addInterceptors(handshakeInterceptor)
     }
 
     @Bean
