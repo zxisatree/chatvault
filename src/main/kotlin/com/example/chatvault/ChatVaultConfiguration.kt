@@ -42,7 +42,6 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf()
-            //.disable()
             .ignoringRequestMatchers("/login/**")
             .ignoringRequestMatchers("/api/**")
             .and()
@@ -56,7 +55,7 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
             .requestMatchers("/api/**").hasRole("USER")
             .and()
             .authorizeHttpRequests()
-            .anyRequest().permitAll()
+            .anyRequest().hasRole("USER")
             .and()
             .formLogin()
             .permitAll()
@@ -79,10 +78,9 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     @Bean
     fun messageAuthorizationManager(messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager<Message<*>> {
         //messages.simpDestMatchers("/**").hasRole("USER")
-        //messages.anyMessage().permitAll()
+        //return AuthorityAuthorizationManager.hasRole("User")
         messages.anyMessage().hasRole("USER")
         return messages.build()
-        //return AuthorityAuthorizationManager.hasRole("User")
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
@@ -97,13 +95,11 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     }
 
     @Bean
-    @Description("Listens to dis/connect events")
     fun connectionListener(): ConnectionListener {
         return ConnectionListener()
     }
 
     @Bean
-    @Description("Keeps track of connected users")
     fun userList(): UserList {
         return UserList()
     }

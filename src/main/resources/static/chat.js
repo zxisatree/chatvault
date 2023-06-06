@@ -3,7 +3,6 @@
 	let chatroom = "";
 	let connected = false;
 	let connectButton = document.querySelector("#connect");
-	let username = "user";
 
 	async function connect() {
 		if (!connected) {
@@ -28,7 +27,6 @@
 						showIMessage(parsedBody);
 					}
 				);
-				// console.log(`Subscribing to /topic/${chatroom}`);
 				stompClient.subscribe(`/topic/${chatroom}`, function (receivedMessage) {
 					const parsedBody = JSON.parse(receivedMessage.body);
 					showIMessage(parsedBody);
@@ -64,21 +62,30 @@
 	}
 
 	function showServerMessage(content) {
-		const message_cell = document.createElement("td");
-		message_cell.innerHTML = content;
-		const new_row = document.createElement("tr");
-		new_row.append(message_cell);
-		new_row.classList.add("text-red-500", "font-bold");
-		document.querySelector("#messages").append(new_row);
+		const messageCell = document.createElement("td");
+		messageCell.innerHTML = content;
+		const newRow = document.createElement("tr");
+		newRow.append(messageCell);
+		newRow.classList.add("text-red-500", "font-bold");
+		document.querySelector("#messages").append(newRow);
 	}
 
 	function showMessage(content) {
-		const message_cell = document.createElement("td");
-		message_cell.innerHTML = content;
-		const new_row = document.createElement("tr");
-		new_row.append(message_cell);
-		new_row.classList.add("even:bg-gray-300");
-		document.querySelector("#messages").append(new_row);
+		const messageContent = document.createElement("div");
+		messageContent.innerHTML = content;
+		const saveText = document.createElement("button");
+		saveText.innerHTML = "Save this message";
+		saveText.classList.add("ml-auto")
+		saveText.onclick = () => {
+			null
+		}
+		const messageCell = document.createElement("td");
+		messageCell.append(messageContent);
+		messageCell.append(saveText);
+		const newRow = document.createElement("tr");
+		newRow.append(messageCell);
+		newRow.classList.add("even:bg-gray-300");
+		document.querySelector("#messages").append(newRow);
 	}
 
 	connectButton.addEventListener("click", connect);

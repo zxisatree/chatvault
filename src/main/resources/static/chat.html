@@ -7,16 +7,16 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script type="text/javascript" src="/chat.js" defer></script>
   </head>
-  <body>
+  <body class="m-2">
     <noscript>
       <div class="text-lg">
         Seems your browser doesn't support Javascript! Websocket relies on
         Javascript being enabled. Please enable Javascript and reload this page!
       </div>
     </noscript>
-    <div id="main-content" class="m-2">
+    <div class="flex">
       <div class="flex-col">
-        <form class="flex w-full h-min p-1" onsubmit="event.preventDefault()">
+        <form class="w-full h-min p-1" onsubmit="event.preventDefault()">
           <div>
             <label for="room">Chatroom:</label>
             <input
@@ -46,16 +46,16 @@
           </button>
         </form>
       </div>
-      <div class="border-t-2 border-gray-500 pt-1">
-        <table id="conversation" class="w-full">
-          <thead>
-            <tr class="bg-gray-300">
-              <th>Messages</th>
-            </tr>
-          </thead>
-          <tbody id="messages"></tbody>
-        </table>
-      </div>
+    </div>
+    <div class="border-t-2 border-gray-500 pt-1">
+      <table id="conversation" class="w-full">
+        <thead>
+          <tr class="bg-gray-300">
+            <th>Messages</th>
+          </tr>
+        </thead>
+        <tbody id="messages"></tbody>
+      </table>
     </div>
   </body>
 </html>

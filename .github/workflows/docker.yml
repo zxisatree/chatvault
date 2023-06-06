@@ -3,15 +3,23 @@ on: push
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      JDBC_PSQL_URI: ${{secrets.JDBC_PSQL_URI}}
-      PSQL_USERNAME: ${{secrets.PSQL_USERNAME}}
-      PSQL_PASSWORD: ${{secrets.PSQL_PASSWORD}}
     steps:
       - uses: actions/checkout@v3
       - name: Create env.properties
         run: |
           touch env.properties
-          printf "JDBC_PSQL_URI=%s\nPSQL_USERNAME=%s\nPSQL_PASSWORD=%s" "$JDBC_PSQL_URI" "$PSQL_USERNAME" "$PSQL_PASSWORD" >> env.properties
-      - name: Build the stack
-        run: docker compose build
+          printf "JDBC_PSQL_URI=jdbc:postgresql://host.docker.internal:5432/chatvault\nPSQL_USERNAME=postgres\nPSQL_PASSWORD=postgres" >> env.properties
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: docker/spring.dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatvault:latest
