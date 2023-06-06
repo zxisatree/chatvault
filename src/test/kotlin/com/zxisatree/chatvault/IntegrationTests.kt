@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll

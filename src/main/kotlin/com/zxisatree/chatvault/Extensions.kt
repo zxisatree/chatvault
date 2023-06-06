@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatterBuilder

@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -53,9 +53,9 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
             .and()
             .authorizeHttpRequests()
             .requestMatchers("/api/**").hasRole("USER")
-            .and()
-            .authorizeHttpRequests()
-            .requestMatchers("/chat.html").hasRole("USER")
+            //.and()
+            //.authorizeHttpRequests()
+            //.requestMatchers("/chat.html").hasRole("USER")
             .and()
             .authorizeHttpRequests()
             .anyRequest().permitAll()

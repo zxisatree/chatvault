@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import org.springframework.data.repository.CrudRepository
 

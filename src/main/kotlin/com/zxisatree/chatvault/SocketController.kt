@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
@@ -48,38 +48,12 @@ class SocketController(private val userList: UserList) {
     }
 }
 
+// CSRF for websockets cannot be disabled without explicitly creating the web socket security class ourselves
 @RestController
 class CsrfController {
     @GetMapping("/csrf")
     fun csrf(token: CsrfToken): CsrfToken {
         return token
-    }
-}
-
-@Component
-class WebSocketAuthenticatorService(
-    private val userDetailsService: UserDetailsService
-) {
-    // This method MUST return a UsernamePasswordAuthenticationToken instance, the spring security chain is testing it with 'instanceof' later on. So don't use a subclass of it or any other class
-    @Throws(AuthenticationException::class)
-    fun getAuthenticatedOrFail(username: String?, password: String?): UsernamePasswordAuthenticationToken {
-        if (username == null || username.trim { it <= ' ' }.isEmpty()) {
-            throw AuthenticationCredentialsNotFoundException("Username was null or empty.")
-        }
-        if (password == null || password.trim { it <= ' ' }.isEmpty()) {
-            throw AuthenticationCredentialsNotFoundException("Password was null or empty.")
-        }
-
-        if (!BCryptPasswordEncoder().matches(password, userDetailsService.loadUserByUsername(username).password)) {
-            throw BadCredentialsException("Bad credentials for user $username")
-        }
-
-        // null credentials, do not pass the password along
-        return UsernamePasswordAuthenticationToken(
-            username,
-            null,
-            userDetailsService.loadUserByUsername(username).authorities
-        )
     }
 }
 

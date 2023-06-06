@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every

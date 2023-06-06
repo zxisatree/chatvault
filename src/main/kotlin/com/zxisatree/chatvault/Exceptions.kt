@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 class ArticleNotFoundException(slug: String) : RuntimeException("Could not find article $slug")
 

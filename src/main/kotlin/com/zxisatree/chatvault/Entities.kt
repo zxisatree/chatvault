@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

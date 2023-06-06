@@ -1,4 +1,4 @@
-package com.example.chatvault
+package com.zxisatree.chatvault
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
