@@ -4,7 +4,6 @@ class UserList() {
     private val onlineUsers: HashSet<String> = HashSet()
 
     fun joinServer(userId: String) {
-        println("adding user to server")
         onlineUsers.add(userId)
     }
 

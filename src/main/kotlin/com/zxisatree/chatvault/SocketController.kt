@@ -66,10 +66,8 @@ class AuthFromSessionInterceptor : ChannelInterceptor {
         val accessor: StompHeaderAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java)
             ?: throw BadCredentialsException("MessageHeaderAccessor.getAccessor failed")
         if (StompCommand.CONNECT == accessor.command) {
-            println("AuthFromSessionInterceptor: user is originally ${accessor.user}")
             accessor.user =
                 getUsernamePasswordAuthenticationToken(accessor.sessionAttributes?.get("SPRING_SECURITY_CONTEXT"))
-            println("Set user as ${accessor.user}")
         }
         return message
     }

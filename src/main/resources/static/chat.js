@@ -77,11 +77,24 @@
 		saveText.innerHTML = "Save this message";
 		saveText.classList.add("ml-auto")
 		saveText.onclick = () => {
-			null
+			if (confirm("Do you really want to save this message?")) {
+				const today = new Date()
+				fetch(`http://${window.location.host}/api/article/`, {
+					method: "POST",
+					body: JSON.stringify({
+						title: `Chatroom message at ${today.getDay()}/${today.getMonth() + 1}/${today.getFullYear()}`,
+						content: content
+					}),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				}).then(res => console.log(res))
+			}
 		}
 		const messageCell = document.createElement("td");
 		messageCell.append(messageContent);
 		messageCell.append(saveText);
+		messageCell.classList.add("flex")
 		const newRow = document.createElement("tr");
 		newRow.append(messageCell);
 		newRow.classList.add("even:bg-gray-300");
