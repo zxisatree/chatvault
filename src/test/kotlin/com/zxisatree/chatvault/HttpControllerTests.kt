@@ -1,6 +1,9 @@
 package com.zxisatree.chatvault
 
 import com.ninjasquad.springmockk.MockkBean
+import com.zxisatree.chatvault.vault.ArticleController
+import com.zxisatree.chatvault.vault.ArticleRepository
+import com.zxisatree.chatvault.vault.UserRepository
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

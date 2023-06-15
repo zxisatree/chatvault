@@ -94,7 +94,7 @@
 		const messageCell = document.createElement("td");
 		messageCell.append(messageContent);
 		messageCell.append(saveText);
-		messageCell.classList.add("flex")
+		messageCell.classList.add("flex", "hover:bg-sky-100")
 		const newRow = document.createElement("tr");
 		newRow.append(messageCell);
 		newRow.classList.add("even:bg-gray-300");

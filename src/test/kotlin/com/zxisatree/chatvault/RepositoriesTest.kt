@@ -20,7 +20,7 @@ class RepositoriesTests @Autowired constructor(
 
     @Test
     fun `When findByIdOrNull then return Article with temporary entries`() {
-        val newUser = Users("anonymous", "password", true)
+        val newUser = User("anonymous", "password", true)
         entityManager.persist(newUser)
         val article = Article("First article", "Lorem ipsum dolor sit amet", newUser)
         entityManager.persist(article) // only works if article.id is nullable and default value is null
@@ -32,7 +32,7 @@ class RepositoriesTests @Autowired constructor(
 
     @Test
     fun `When findByLogin then return User`() {
-        val johnDoe = Users("user", "password", true)
+        val johnDoe = User("user", "password", true)
         val user = userRepository.findByUsername(johnDoe.username)
         assertThat(user?.username).isEqualTo(johnDoe.username)
         val b = BCryptPasswordEncoder()

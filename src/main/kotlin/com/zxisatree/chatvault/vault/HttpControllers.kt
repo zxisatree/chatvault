@@ -1,5 +1,7 @@
-package com.zxisatree.chatvault
+package com.zxisatree.chatvault.vault
 
+import com.zxisatree.chatvault.*
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -14,7 +16,6 @@ class ArticleController(
     private val articleRepository: ArticleRepository,
     private val userRepository: UserRepository
 ) {
-
     @GetMapping("/")
     fun findAll() = articleRepository.findAllByOrderByAddedAtDesc()
 
@@ -74,5 +75,35 @@ class AdminController(private val userRepository: UserRepository) {
     @GetMapping("/", produces=[MediaType.TEXT_PLAIN_VALUE])
     fun getLogs(): String {
         return File("logs/chatvault.log").readText()
+    }
+}
+
+@RestController
+@RequestMapping("/api/room")
+class RoomController(private val userRepository: UserRepository, private val roomRepository: RoomRepository, private val repositoryUtilities: RepositoryUtilities) {
+    @GetMapping("/")
+    fun getRooms(): Iterable<Room> = roomRepository.findAll()
+
+    @GetMapping("/{id}")
+    fun getRoom(@PathVariable id: String) = roomRepository.findByIdOrNull(id.toLongOrNull() ?: throw Exception("id is not an integer")) ?: throw Exception ("room $id not found")
+
+    @PostMapping("/")
+    fun createRoom(@RequestBody body: Map<String, String>, principal: Principal): ResponseEntity<String> {
+        val creator = userRepository.findByUsername(principal.name) ?: throw Exception("Current user not found in DB")
+        val name = body["name"] ?: throw Exception("The new server needs a name field.")
+        repositoryUtilities.createRoom(name, creator)
+        return ResponseEntity.status(HttpStatus.CREATED).body("Created room successfully")
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteRoom(@PathVariable id: String, principal: Principal) {
+        // Check if the current user is an admin of the room
+        val idNumber = id.toLongOrNull() ?: throw Exception("room ID not an integer")
+        val user = userRepository.findByUsername(principal.name) ?: throw Exception("Current user not found in DB")
+        val room = roomRepository.findByIdOrNull(idNumber) ?: throw Exception("room $id not found")
+        if (user !in room.admins) {
+            throw Exception("current user is not an admin of room $id")
+        }
+        repositoryUtilities.deleteRoom(room)
     }
 }

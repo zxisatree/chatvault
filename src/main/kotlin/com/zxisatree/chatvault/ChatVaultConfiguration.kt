@@ -1,9 +1,10 @@
 package com.zxisatree.chatvault
 
-import org.springframework.beans.factory.annotation.Autowired
+import com.zxisatree.chatvault.chat.ConnectionListener
+import com.zxisatree.chatvault.chat.UserList
+import com.zxisatree.chatvault.chat.socketTopicPrefix
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Description
 import org.springframework.messaging.Message
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
 import org.springframework.security.authorization.AuthorizationManager
@@ -80,15 +81,14 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
 
     @Bean
     fun messageAuthorizationManager(messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager<Message<*>> {
-        //messages.simpDestMatchers("/**").hasRole("USER")
-        //return AuthorityAuthorizationManager.hasRole("User")
-        messages.anyMessage().hasRole("USER")
+        messages.simpDestMatchers("/**").hasRole("USER").nullDestMatcher().hasRole("USER")
+            .anyMessage().denyAll()
         return messages.build()
     }
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
         // Prefix for chatroom endpoints
-        config.enableSimpleBroker("/topic")
+        config.enableSimpleBroker(socketTopicPrefix)
     }
 
     // Initial STOMP connection endpoint

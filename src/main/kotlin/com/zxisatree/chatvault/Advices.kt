@@ -28,4 +28,18 @@ class Advices {
     fun invalidRequestHandler(ex: InvalidRequestException): String? {
         return ex.message
     }
+
+    @ResponseBody
+    @ExceptionHandler(ChatroomDoesNotExistException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun chatroomDoesNotExistHandler(ex: ChatroomDoesNotExistException): String? {
+        return ex.message
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidMessageException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun chatroomDoesNotExistHandler(ex: InvalidMessageException): String? {
+        return ex.message
+    }
 }

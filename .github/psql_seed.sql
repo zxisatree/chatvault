@@ -104,7 +104,8 @@ admin	t	$2a$10$6MN7h/YNEBbrNaiRioYBre1hdZNYFbHdtrGSXFNsRlRXN3kCCv74e
 user	t	$2a$10$fSWw5hjfa2HBNRaNafzAH.hgVa3YDx3ZK7TT5mbR08FxTnqIO34Mq
 \.
 
-
+INSERT INTO users VALUES ('admin', true, '$2a$10$6MN7h/YNEBbrNaiRioYBre1hdZNYFbHdtrGSXFNsRlRXN3kCCv74e'),
+    ('user', true, '$2a$10$fSWw5hjfa2HBNRaNafzAH.hgVa3YDx3ZK7TT5mbR08FxTnqIO34Mq');
 --
 -- Name: article_seq; Type: SEQUENCE SET; Schema: public; Owner: compose_or_else
 --

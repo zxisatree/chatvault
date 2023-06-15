@@ -1,4 +1,4 @@
-package com.zxisatree.chatvault
+package com.zxisatree.chatvault.chat
 
 class UserList() {
     private val onlineUsers: HashSet<String> = HashSet()

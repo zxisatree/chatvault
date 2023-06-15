@@ -1,5 +1,6 @@
-package com.zxisatree.chatvault
+package com.zxisatree.chatvault.vault
 
+import com.zxisatree.chatvault.*
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -43,7 +44,7 @@ class HtmlController(
         val id: Long,
         val title: String,
         val content: String,
-        val author: Users,
+        val author: User,
         val addedAt: String
     )
 

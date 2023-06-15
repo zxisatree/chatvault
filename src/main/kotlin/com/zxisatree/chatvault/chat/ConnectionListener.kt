@@ -1,4 +1,4 @@
-package com.zxisatree.chatvault
+package com.zxisatree.chatvault.chat
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
@@ -13,23 +13,23 @@ class ConnectionListener {
     @EventListener(SessionConnectEvent::class)
     fun handleSessionConnected(event: SessionConnectEvent) {
         val headers: SimpMessageHeaderAccessor = SimpMessageHeaderAccessor.wrap(event.message)
-        val sessionId = headers.sessionId
-        if (sessionId == null) {
-            println("sessionId is null")
+        val username = headers.user?.name
+        if (username == null) {
+            println("username is null")
             return
         }
-        userList.joinServer(sessionId)
+        userList.joinServer(username)
     }
 
     @EventListener(SessionDisconnectEvent::class)
     fun handleSessionDisconnect(event: SessionDisconnectEvent) {
         val headers: SimpMessageHeaderAccessor = SimpMessageHeaderAccessor.wrap(event.message)
-        val sessionId = headers.sessionId
-        if (sessionId == null) {
-            println("sessionId is null")
+        val username = headers.user?.name
+        if (username == null) {
+            println("username is null")
             return
         }
-        userList.leaveServer(sessionId)
+        userList.leaveServer(username)
     }
 
     //    @EventListener
