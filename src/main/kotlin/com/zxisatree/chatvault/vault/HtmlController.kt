@@ -12,6 +12,10 @@ class HtmlController(
     private val articleRepository: ArticleRepository,
     private val properties: BlogProperties
 ) {
+    @GetMapping("/chatroom")
+    fun chat(): String {
+        return "chat"
+    }
 
     @GetMapping("/")
     fun blog(model: Model): String {

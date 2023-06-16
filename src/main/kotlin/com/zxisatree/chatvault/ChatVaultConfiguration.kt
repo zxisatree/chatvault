@@ -43,7 +43,6 @@ class ChatVaultConfiguration : WebSocketMessageBrokerConfigurer {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf()
-            .ignoringRequestMatchers("/login/**")
             .ignoringRequestMatchers("/api/**")
             .and()
             .authorizeHttpRequests()

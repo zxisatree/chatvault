@@ -25,6 +25,7 @@
               value="chatroom"
               placeholder="What room do you want to enter?"
             />
+            <input id="csrf" type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}" />
           </div>
           <button
             id="connect"
@@ -33,6 +34,7 @@
           >
             Connect
           </button>
+            <div id="connectErrorMessage" class="pl-2"></div>
         </form>
         <form class="p-1" onsubmit="event.preventDefault()">
           <label for="content">Send a message:</label>

@@ -4,7 +4,7 @@
 	let connected = false;
 	let connectButton = document.querySelector("#connect");
 
-	async function connect() {
+	async function connect(event) {
 		if (!connected) {
 			connected = true;
 			chatroom = document.querySelector("#room").value;
@@ -12,12 +12,10 @@
 				console.log("Empty chatroom name not allowed");
 				return;
 			}
-			const headers = {}
-			const csrfResult = await fetch("http://localhost:8080/csrf")
-			const csrfToken = await csrfResult.json()
-			headers[csrfToken.headerName] = csrfToken.token
+			const headers = {"X-CSRF-TOKEN": document.querySelector("#csrf").value}
 			stompClient = Stomp.client(`ws://${location.host}/chat`);
 			stompClient.connect(headers, function (frame) {
+				document.querySelector("#connectErrorMessage").innerHTML = ""
 				console.log("Connected: " + frame);
 				connectButton.innerHTML = "Disconnect";
 				stompClient.subscribe(
@@ -31,6 +29,15 @@
 					const parsedBody = JSON.parse(receivedMessage.body);
 					showIMessage(parsedBody);
 				});
+			}, function (errorObject) {
+				if (errorObject["command"] === "ERROR") {
+					document.querySelector("#connectErrorMessage").innerHTML = "You have been disconnected. Please try again."
+					connected = false;
+					if (stompClient !== null) {
+						stompClient.disconnect();
+					}
+					connectButton.innerHTML = "Connect";
+				}
 			});
 		} else {
 			connected = false;

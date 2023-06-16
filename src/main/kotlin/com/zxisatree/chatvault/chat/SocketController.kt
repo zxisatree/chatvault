@@ -26,6 +26,8 @@ import org.springframework.security.web.csrf.CsrfToken
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
 import org.springframework.web.util.HtmlUtils
@@ -60,14 +62,19 @@ class SocketController(private val userList: UserList, private val roomRepositor
     }
 }
 
-// CSRF for websockets cannot be disabled without explicitly creating the web socket security class ourselves
-@RestController
-class CsrfController {
-    @GetMapping("/csrf")
-    fun csrf(token: CsrfToken): CsrfToken {
-        return token
-    }
-}
+//// CSRF for websockets cannot be disabled without explicitly creating the web socket security class ourselves
+//@RestController
+//class CsrfController {
+//    @GetMapping("/csrf")
+//    fun csrf(token: CsrfToken): CsrfToken {
+//        return token
+//    }
+//
+//    @PostMapping("/testCsrf")
+//    fun testCsrf(@RequestBody body: Map<String, String>) {
+//        body.entries.forEach { println("${it.key}: ${it.value}") }
+//    }
+//}
 
 @Component
 class AuthFromSessionInterceptor : ChannelInterceptor {
